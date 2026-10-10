@@ -1,0 +1,23 @@
+{
+  "name": "puthari-restaurant-website",
+  "version": "1.0.0",
+  "description": "Premium modern responsive website and ordering demo for Puthari Restaurant, Kampalapura, Karnataka",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "restaurant",
+    "puthari-restaurant",
+    "kampalapura",
+    "biriyani",
+    "family-restaurant",
+    "express"
+  ],
+  "author": "Puthari Restaurant Dev Team",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.22.3"
+  }
+}

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery | Puthari Restaurant, Kampalapura</title>
+  
+  <meta name="description" content="View photo gallery of Puthari Restaurant in Kampalapura. Delicious biriyani, signature egg chilli, chicken specials, and family dining ambience.">
+  <meta property="og:title" content="Photo Gallery | Puthari Restaurant Kampalapura">
+  <meta property="og:description" content="Visual highlights of our dishes, hospitality, and highway family dining setting.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1200&q=80">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Info Bar -->
+  <aside class="top-notice-bar" aria-label="Business Verification Bar">
+    <span>📍 <strong>BM Road, Kampalapura, Karnataka 571107</strong></span>
+    <span>•</span>
+    <span><span class="badge-provided">Business Info</span> 3.9 / 5.0 (64 Reviews)</span>
+    <span>•</span>
+    <span>🕒 Closing: <strong>2:00 AM</strong></span>
+    <span>•</span>
+    <span>Dine-In • Drive-Through • Delivery</span>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo-link" aria-label="Puthari Restaurant Home">
+          <img src="assets/images/logo.svg" alt="Puthari Restaurant Logo" class="brand-logo-img">
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="menu.html" class="nav-link">Menu</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+          <li><a href="reviews.html" class="nav-link">Reviews</a></li>
+          <li><a href="contact.html" class="nav-link">Contact & Location</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="cart-trigger-btn" data-action="open-cart" aria-label="View Shopping Cart">
+            <span>🛒 Cart</span>
+            <span class="cart-badge-count" style="display:none;">0</span>
+          </button>
+          
+          <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Navigation Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Overlay & Drawer -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
+    <div>
+      <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(212,175,55,0.2);">
+        <img src="assets/images/logo.svg" alt="Puthari Restaurant" style="height: 40px;">
+      </div>
+      <ul class="mobile-links">
+        <li><a href="index.html" class="mobile-link">Home</a></li>
+        <li><a href="menu.html" class="mobile-link">Full Menu</a></li>
+        <li><a href="about.html" class="mobile-link">About Us</a></li>
+        <li><a href="gallery.html" class="mobile-link active">Food Gallery</a></li>
+        <li><a href="reviews.html" class="mobile-link">Customer Reviews</a></li>
+        <li><a href="contact.html" class="mobile-link">Visit & Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="plus-code-box" style="margin-bottom: 16px; width: 100%; justify-content: center;">
+        <span>📍 85P2+2W Kampalapura</span>
+      </div>
+      <a href="https://maps.google.com/?q=85P2%2B2W+Kampalapura,+Karnataka" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold" style="width: 100%;">
+        Get Directions
+      </a>
+    </div>
+  </aside>
+
+  <main>
+    <!-- GALLERY HERO HEADER -->
+    <section style="background: var(--grad-dark-mesh); padding: 50px 0 40px; border-bottom: 1px solid rgba(212,175,55,0.15);">
+      <div class="container text-center">
+        <span class="section-label">Visual Showcase</span>
+        <h1 class="section-title">The Puthari Gallery</h1>
+        <p class="section-subtitle center-block" style="margin-bottom: 20px;">
+          An appetizing visual walk through our specialty biriyanis, sizzling starters, comforting gravies, and welcoming family ambience in Kampalapura.
+        </p>
+
+        <!-- Mandatory Illustrative Photo Notice -->
+        <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); padding:8px 20px; border-radius:30px; font-size:0.82rem; color:var(--color-gold-light);">
+          <span>📷 <strong>Photo Notice:</strong> Photographs below represent illustrative culinary and ambiance styles until official restaurant gallery photos are uploaded.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY GRID & FILTERS -->
+    <section class="gallery-section" style="border: none;">
+      <div class="container">
+        
+        <!-- Filter Tabs -->
+        <div class="category-filter-list" style="margin-bottom: 36px;">
+          <button class="cat-filter-btn gallery-filter-btn active" data-filter="all">All Photos</button>
+          <button class="cat-filter-btn gallery-filter-btn" data-filter="biriyani">Biriyani & Rice</button>
+          <button class="cat-filter-btn gallery-filter-btn" data-filter="starters">Starters & Egg Chilli</button>
+          <button class="cat-filter-btn gallery-filter-btn" data-filter="curries">Curries & Specials</button>
+          <button class="cat-filter-btn gallery-filter-btn" data-filter="ambience">Ambience & Family</button>
+        </div>
+
+        <div class="gallery-grid">
+          
+          <!-- 1: Chicken Biriyani -->
+          <div class="gallery-item" data-gallery-cat="biriyani">
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80" alt="Claypot Chicken Dum Biriyani">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Puthari Special Chicken Biriyani</div>
+              <div class="gallery-item-desc">Aromatic dum basmati infused with regional spices</div>
+            </div>
+          </div>
+
+          <!-- 2: Egg Chilli -->
+          <div class="gallery-item" data-gallery-cat="starters">
+            <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80" alt="Puthari Signature Egg Chilli Starter">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Signature Egg Chilli</div>
+              <div class="gallery-item-desc">Crisp-fried boiled egg wedges tossed in spicy wok glaze</div>
+            </div>
+          </div>
+
+          <!-- 3: Mutton Biriyani -->
+          <div class="gallery-item" data-gallery-cat="biriyani">
+            <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=800&q=80" alt="Highway Mutton Biriyani">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Highway Mutton Biriyani</div>
+              <div class="gallery-item-desc">Tender slow-braised country mutton dum</div>
+            </div>
+          </div>
+
+          <!-- 4: Chicken 65 -->
+          <div class="gallery-item" data-gallery-cat="starters">
+            <img src="https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80" alt="Fiery Chicken 65">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Crispy Chicken 65</div>
+              <div class="gallery-item-desc">Marinated in crushed pepper and curry leaves</div>
+            </div>
+          </div>
+
+          <!-- 5: Nati Chicken Curry -->
+          <div class="gallery-item" data-gallery-cat="curries">
+            <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80" alt="Nati Style Chicken Curry">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Karnataka Nati Chicken Curry</div>
+              <div class="gallery-item-desc">Rustic coconut and roasted coriander masala gravy</div>
+            </div>
+          </div>
+
+          <!-- 6: Paneer Butter Masala -->
+          <div class="gallery-item" data-gallery-cat="curries">
+            <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80" alt="Creamy Paneer Butter Masala">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Paneer Butter Masala</div>
+              <div class="gallery-item-desc">Velvety tomato-cashew satin gravy</div>
+            </div>
+          </div>
+
+          <!-- 7: Restaurant Dining Room -->
+          <div class="gallery-item" data-gallery-cat="ambience">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Comfortable family restaurant tables">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Main Family Dining Hall</div>
+              <div class="gallery-item-desc">Clean, spacious seating for family dinners</div>
+            </div>
+          </div>
+
+          <!-- 8: Ghee Rice -->
+          <div class="gallery-item" data-gallery-cat="biriyani">
+            <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80" alt="Aromatic Ghee Rice and Cashews">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Desi Ghee Rice</div>
+              <div class="gallery-item-desc">Toasted nuts, fried onions, and whole spices</div>
+            </div>
+          </div>
+
+          <!-- 9: Chilli Chicken Indo-Chinese -->
+          <div class="gallery-item" data-gallery-cat="starters">
+            <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80" alt="Chilli Chicken Starter">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Chilli Chicken Dry</div>
+              <div class="gallery-item-desc">Crunchy peppers and dark soy glaze</div>
+            </div>
+          </div>
+
+          <!-- 10: Family Dining Experience -->
+          <div class="gallery-item" data-gallery-cat="ambience">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Warm hospitality and dining moments">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Warm Dining Atmosphere</div>
+              <div class="gallery-item-desc">Welcoming service for road travelers and families</div>
+            </div>
+          </div>
+
+          <!-- 11: Hakka Noodles -->
+          <div class="gallery-item" data-gallery-cat="biriyani">
+            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80" alt="Wok Charred Hakka Noodles">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Wok Tossed Hakka Noodles</div>
+              <div class="gallery-item-desc">Fresh vegetables and savoury seasoning</div>
+            </div>
+          </div>
+
+          <!-- 12: Highway Exterior & Evening -->
+          <div class="gallery-item" data-gallery-cat="ambience">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" alt="Evening dining setting">
+            <div class="gallery-overlay">
+              <div class="gallery-item-title">Late-Night Highway Setting</div>
+              <div class="gallery-item-desc">Open late on BM Road with convenient parking</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="galleryLightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close-btn" aria-label="Close Lightbox">✕</button>
+      <img src="" alt="Zoomed dish photograph" class="lightbox-image">
+      <div class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER & CHECKOUT MODAL -->
+  <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Cart Drawer">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title">
+        <span>🛒</span>
+        <span>Your Order</span>
+      </div>
+      <button class="cart-close-btn" data-action="close-cart" aria-label="Close Cart">✕</button>
+    </div>
+
+    <div class="cart-empty-state" id="cartEmptyState">
+      <div class="cart-empty-icon">🍲</div>
+      <h3 class="cart-empty-title">Your Cart is Empty</h3>
+      <p class="cart-empty-desc">Explore our signature biriyanis, egg chilli, and regional dishes to begin ordering.</p>
+      <a href="menu.html" class="btn btn-primary btn-sm">Browse Menu</a>
+    </div>
+
+    <div class="cart-drawer-body" id="cartItemsContainer"></div>
+
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div>
+        <div style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-cream); margin-bottom: 6px;">
+          Select Dining Preference:
+        </div>
+        <div class="order-type-selector">
+          <button class="order-type-btn active" data-type="dinein">🍽️ Dine-In</button>
+          <button class="order-type-btn" data-type="takeaway">🚗 Takeaway</button>
+          <button class="order-type-btn" data-type="delivery">🛵 Delivery</button>
+        </div>
+      </div>
+
+      <div class="cart-summary-line">
+        <span>Subtotal</span>
+        <span id="cartSubtotalAmount">₹0</span>
+      </div>
+      <div class="cart-summary-line" id="cartFeeRow" style="display:none;">
+        <span>Packaging / Delivery Fee</span>
+        <span id="cartFeeAmount">₹30</span>
+      </div>
+      <div class="cart-summary-line total">
+        <span>Total Amount</span>
+        <span class="total-price" id="cartGrandTotalAmount">₹0</span>
+      </div>
+
+      <div class="demo-mode-pill">
+        ℹ️ Demo Checkout: Generates an instant order summary with WhatsApp sharing support.
+      </div>
+
+      <button class="btn btn-primary" id="btnProceedCheckout" style="width: 100%;">
+        Proceed to Order →
+      </button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="checkout-modal-overlay" id="checkoutModal">
+    <div class="checkout-modal-card">
+      <div class="checkout-modal-header">
+        <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: #FFF;">Order Checkout</h3>
+        <button class="cart-close-btn" id="btnCloseCheckout">✕</button>
+      </div>
+      <div class="checkout-modal-body">
+        
+        <div style="background: rgba(22,62,43,0.3); border: 1px solid var(--color-gold-border); padding: 14px; border-radius: 10px; margin-bottom: 8px;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold-light); margin-bottom: 4px;">
+            Order Mode: <span id="checkoutOrderTypeNotice">Dine-In</span>
+          </div>
+          <div id="checkoutItemsReview" style="max-height: 120px; overflow-y: auto;"></div>
+          <div style="display:flex; justify-content:space-between; margin-top: 8px; font-weight: 700; font-size: 1rem; color: #FFF;">
+            <span>Grand Total:</span>
+            <span id="checkoutTotalDisplay" style="color:var(--color-gold-light);">₹0</span>
+          </div>
+        </div>
+
+        <form id="orderCheckoutForm">
+          <div class="form-group">
+            <label for="custName">Your Full Name *</label>
+            <input type="text" id="custName" name="customerName" class="form-control" placeholder="e.g. Anand Gowda" required>
+          </div>
+
+          <div class="form-group">
+            <label for="custPhone">Phone Number *</label>
+            <input type="tel" id="custPhone" name="customerPhone" class="form-control" placeholder="e.g. 9876543210" required>
+          </div>
+
+          <div class="form-group">
+            <label for="locDetail">Table Number / Delivery Address / Vehicle No.</label>
+            <input type="text" id="locDetail" name="locationDetail" class="form-control" placeholder="e.g. Table 4 / Kampalapura Main Rd / KA-09 Car">
+          </div>
+
+          <div class="form-group">
+            <label for="orderNotes">Cooking Notes or Special Requests</label>
+            <textarea id="orderNotes" name="orderNotes" class="form-control" rows="2" placeholder="e.g. Medium spice, extra onion raita"></textarea>
+          </div>
+
+          <div class="demo-mode-pill" style="margin: 6px 0 16px;">
+            🔒 Safe Demo: No credit card required. Creates an instant order slip.
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            Place Order (Demo Mode) →
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING ACTIONS -->
+  <div class="floating-actions-container">
+    <a href="https://wa.me/?text=Hello%20Puthari%20Restaurant!%20I%20would%20like%20to%20inquire%20about%20your%20restaurant." 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="floating-whatsapp-btn" 
+       title="Chat on WhatsApp" 
+       aria-label="WhatsApp Chat">
+      💬
+    </a>
+    <button class="back-to-top-btn" id="backToTopBtn" title="Back to top" aria-label="Back to Top">
+      ↑
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <img src="assets/images/logo.svg" alt="Puthari Restaurant" style="height: 48px; margin-bottom: 16px;">
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
+            A premier family dining destination in Kampalapura, Karnataka on BM Road. Dedicated to delicious biriyanis, signature egg chilli, and authentic hospitality.
+          </p>
+          <div class="plus-code-box">
+            <span>Plus Code: <strong>85P2+2W Kampalapura</strong></span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Explore Menu</a></li>
+            <li><a href="about.html">About Our Restaurant</a></li>
+            <li><a href="gallery.html">Photo Gallery</a></li>
+            <li><a href="reviews.html">Customer Reviews (3.9★)</a></li>
+            <li><a href="contact.html">Contact & Directions</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Timings & Options</h4>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 8px;">
+            Daily: 11:00 AM – 2:00 AM<br>
+            <em>(Verify hours before publishing)</em>
+          </p>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted);">
+            Price Range: ₹200–₹400 per person<br>
+            Dine-In • Drive-Through • Delivery
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Location</h4>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 14px;">
+            BM Road, Kampalapura,<br>
+            Karnataka 571107, India
+          </p>
+          <a href="https://maps.google.com/?q=85P2%2B2W+Kampalapura,+Karnataka" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-sm">
+            <span>🗺️ Get Google Directions</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>© 2026 Puthari Restaurant, Kampalapura. All rights reserved.</div>
+        <div>Provided Rating: 3.9/5 from 64 Google reviews. Illustrative photos for presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/menu-data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

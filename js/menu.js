@@ -1,19 +1,45 @@
 /**
- * PUTHARI RESTAURANT — Menu Interactivity & Rendering Engine
- * Filters: Category, Veg / Non-Veg, Search query, Price sorting
+ * NOSH RESTO CAFE — Menu Interactivity & Rendering Engine
+ * Filters: Category pills, Veg / Non-Veg toggles, Real-time search, Sort options
+ * Features: Dish Quick View Modal, dynamic cart sync
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   const menuContainer = document.getElementById('menuGridContainer');
-  if (!menuContainer) return; // If on a page without the main menu grid
+  if (!menuContainer) return; // If page doesn't have the main interactive menu grid
 
   let currentCategory = 'all';
   let currentDiet = 'all'; // 'all' | 'veg' | 'nonveg'
   let currentSearch = '';
-  let currentSort = 'default';
+  let currentSort = 'default'; // 'default' | 'price-asc' | 'price-desc' | 'rating'
 
-  // Render function
+  // Render Category Counts on Buttons
+  function updateCategoryPillCounts() {
+    if (typeof getAllMenuItems !== 'function') return;
+    const allDishes = getAllMenuItems();
+
+    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+      const cat = btn.getAttribute('data-cat');
+      let count = 0;
+      if (cat === 'all') {
+        count = allDishes.length;
+      } else {
+        count = allDishes.filter(d => d.category === cat).length;
+      }
+
+      let countBadge = btn.querySelector('.cat-count');
+      if (!countBadge) {
+        countBadge = document.createElement('span');
+        countBadge.className = 'cat-count';
+        btn.appendChild(countBadge);
+      }
+      countBadge.textContent = count;
+    });
+  }
+
+  // Render Dishes
   function renderMenu() {
+    if (typeof getAllMenuItems !== 'function') return;
     let items = getAllMenuItems();
 
     // 1. Filter by category
@@ -39,171 +65,138 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. Sort
-    if (currentSort === 'price-low') {
+    if (currentSort === 'price-asc') {
       items.sort((a, b) => a.price - b.price);
-    } else if (currentSort === 'price-high') {
+    } else if (currentSort === 'price-desc') {
       items.sort((a, b) => b.price - a.price);
     } else if (currentSort === 'rating') {
       items.sort((a, b) => b.rating - a.rating);
     }
 
+    // Update active count summary label
+    const resultsCountEl = document.getElementById('menuResultsCount');
+    if (resultsCountEl) {
+      resultsCountEl.textContent = `Showing ${items.length} ${items.length === 1 ? 'dish' : 'dishes'}`;
+    }
+
     // Empty state
     if (items.length === 0) {
       menuContainer.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed rgba(212,175,55,0.3);">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🍲</div>
-          <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #FFF; margin-bottom: 8px;">No matching dishes found</h3>
-          <p style="color: var(--color-text-muted); font-size: 0.9rem; max-width: 400px; margin: 0 auto 20px;">Try adjusting your filter or searching for another favourite like Biriyani, Egg Chilli, or Ghee Rice.</p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed rgba(212,175,96,0.3);">
+          <div style="font-size: 2.8rem; margin-bottom: 14px;">🍽️</div>
+          <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: #FFF; margin-bottom: 8px;">No matching dishes found</h3>
+          <p style="color: var(--color-cream-muted); font-size: 0.9rem; max-width: 440px; margin: 0 auto 20px;">Try clearing your search keyword or switching between Vegetarian and Non-Vegetarian options.</p>
           <button class="btn btn-outline-gold btn-sm" id="btnResetMenuFilters">Reset All Filters</button>
         </div>
       `;
 
       const resetBtn = document.getElementById('btnResetMenuFilters');
       if (resetBtn) {
-        resetBtn.addEventListener('click', resetAllFilters);
+        resetBtn.addEventListener('click', () => {
+          currentCategory = 'all';
+          currentDiet = 'all';
+          currentSearch = '';
+          currentSort = 'default';
+
+          const searchInput = document.getElementById('menuSearchInput');
+          if (searchInput) searchInput.value = '';
+
+          const sortSelect = document.getElementById('menuSortSelect');
+          if (sortSelect) sortSelect.value = 'default';
+
+          document.querySelectorAll('.cat-filter-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-cat') === 'all');
+          });
+
+          document.querySelectorAll('.diet-pill-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-diet') === 'all');
+          });
+
+          renderMenu();
+        });
       }
       return;
     }
 
     // Render cards
     menuContainer.innerHTML = items.map(dish => {
-      const currentQty = window.puthariCart ? window.puthariCart.getItemQuantity(dish.id) : 0;
-      const spiceIcons = '🌶️'.repeat(dish.spiceLevel || 0);
-
-      // Badge style
-      let badgeClass = 'badge-popular';
-      if (dish.badge === 'Bestseller') badgeClass = 'badge-bestseller';
-      if (dish.badge === "Chef's Special") badgeClass = 'badge-chef';
-      if (dish.badge === 'Vegetarian') badgeClass = 'badge-veg-label';
+      const inCart = window.noshCart ? window.noshCart.items.find(i => i.id === dish.id) : null;
+      const dietClass = dish.isVeg ? 'veg' : 'nonveg';
+      const dietLabel = dish.isVeg ? 'Vegetarian' : 'Non-Vegetarian';
 
       return `
-        <article class="menu-card" data-id="${dish.id}">
-          <div class="menu-card-image-wrap">
-            <img src="${dish.image}" alt="${dish.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=600&q=80'">
-            ${dish.badge ? `<span class="menu-badge ${badgeClass}">${dish.badge}</span>` : ''}
-            <div class="diet-indicator ${dish.isVeg ? 'veg' : 'non-veg'}" title="${dish.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}"></div>
+        <div class="food-card" data-id="${dish.id}">
+          <div class="food-card-thumb-wrap">
+            <img src="${dish.image}" alt="${dish.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'">
+            <div class="food-card-top-badges">
+              <span class="diet-badge ${dietClass}" title="${dietLabel}"></span>
+              ${dish.badge ? `<span class="food-card-badge">${dish.badge}</span>` : ''}
+            </div>
+            <span class="food-card-prep">⏱️ ${dish.prepTime}</span>
           </div>
-          <div class="menu-card-body">
-            <div class="menu-card-header">
-              <h3 class="menu-dish-title">${dish.name}</h3>
+
+          <div class="food-card-body">
+            <div class="food-card-title-row">
+              <h4 class="food-card-title">${dish.name}</h4>
+              <span class="food-card-rating">★ ${dish.rating}</span>
             </div>
-            <div class="menu-spice-rating">
-              <span>${dish.categoryName}</span>
-              <span>•</span>
-              <span title="Rating">${dish.rating} ★ (${dish.reviewsCount})</span>
-              ${dish.spiceLevel > 0 ? `<span>•</span> <span class="spice-icons" title="Spice level: ${dish.spiceLevel}">${spiceIcons}</span>` : ''}
-            </div>
-            <p class="menu-dish-desc">${dish.description}</p>
-            <div class="menu-dish-footer">
-              <div class="menu-price-wrap">
-                <span class="menu-price">₹${dish.price}</span>
-                <span class="menu-price-note">Sample Price</span>
+
+            <p class="food-card-desc">${dish.description}</p>
+
+            <div class="food-card-footer">
+              <div class="food-price-box">
+                <span class="food-price-curr">Price</span>
+                <span class="food-price-val">₹${dish.price}</span>
               </div>
-              <div class="card-cart-action" id="action-wrap-${dish.id}">
-                ${renderCardButtonHtml(dish.id, currentQty)}
+
+              <div class="food-card-actions">
+                <button type="button" class="btn-card-quick" onclick="openDishQuickView('${dish.id}')" title="Quick View">
+                  👁️
+                </button>
+                <div class="food-card-action-wrap">
+                  ${inCart ? `
+                    <div class="qty-stepper">
+                      <button type="button" class="qty-step-btn" onclick="noshCart.updateQuantity('${dish.id}', -1)" aria-label="Decrease quantity">−</button>
+                      <span class="qty-count-val">${inCart.quantity}</span>
+                      <button type="button" class="qty-step-btn" onclick="noshCart.updateQuantity('${dish.id}', 1)" aria-label="Increase quantity">+</button>
+                    </div>
+                  ` : `
+                    <button type="button" class="btn-add-cart" onclick="noshCart.addFromCard('${dish.id}')">
+                      <span>+ Add</span>
+                    </button>
+                  `}
+                </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
       `;
     }).join('');
   }
 
-  function renderCardButtonHtml(dishId, qty) {
-    if (qty > 0) {
-      return `
-        <div class="card-qty-controller">
-          <button class="qty-btn" onclick="handleCardQtyChange('${dishId}', -1)">-</button>
-          <span class="qty-val">${qty}</span>
-          <button class="qty-btn" onclick="handleCardQtyChange('${dishId}', 1)">+</button>
-        </div>
-      `;
-    } else {
-      return `
-        <button class="btn-add-cart" onclick="handleCardAdd('${dishId}')">
-          <span>+</span> Add
-        </button>
-      `;
-    }
-  }
-
-  // Global button handlers for cards
-  window.handleCardAdd = function(dishId) {
-    const dish = getMenuItemById(dishId);
-    if (dish && window.puthariCart) {
-      window.puthariCart.addItem(dish, 1);
-      updateSingleCardButton(dishId);
-    }
-  };
-
-  window.handleCardQtyChange = function(dishId, delta) {
-    if (window.puthariCart) {
-      window.puthariCart.updateQuantity(dishId, delta);
-      updateSingleCardButton(dishId);
-    }
-  };
-
-  function updateSingleCardButton(dishId) {
-    const wrap = document.getElementById(`action-wrap-${dishId}`);
-    if (wrap && window.puthariCart) {
-      const qty = window.puthariCart.getItemQuantity(dishId);
-      wrap.innerHTML = renderCardButtonHtml(dishId, qty);
-    }
-  }
-
-  window.refreshCardButtons = function() {
-    document.querySelectorAll('.menu-card').forEach(card => {
-      const id = card.getAttribute('data-id');
-      if (id) {
-        updateSingleCardButton(id);
-      }
-    });
-  };
-
-  function resetAllFilters() {
-    currentCategory = 'all';
-    currentDiet = 'all';
-    currentSearch = '';
-    currentSort = 'default';
-
-    document.querySelectorAll('.cat-filter-btn').forEach(b => {
-      b.classList.toggle('active', b.getAttribute('data-cat') === 'all');
-    });
-
-    document.querySelectorAll('.diet-pill').forEach(b => {
-      b.classList.toggle('active', b.getAttribute('data-diet') === 'all');
-    });
-
-    const searchInput = document.getElementById('menuSearchInput');
-    if (searchInput) searchInput.value = '';
-
-    const sortSelect = document.getElementById('menuSortSelect');
-    if (sortSelect) sortSelect.value = 'default';
-
-    renderMenu();
-  }
-
-  // Category buttons
-  document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+  // Bind Category Buttons
+  const catButtons = document.querySelectorAll('.cat-filter-btn');
+  catButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+      catButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentCategory = btn.getAttribute('data-cat');
+      currentCategory = btn.getAttribute('data-cat') || 'all';
       renderMenu();
     });
   });
 
-  // Dietary filter buttons
-  document.querySelectorAll('.diet-pill').forEach(btn => {
+  // Bind Diet Filter Buttons
+  const dietButtons = document.querySelectorAll('.diet-pill-btn');
+  dietButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.diet-pill').forEach(b => b.classList.remove('active'));
+      dietButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentDiet = btn.getAttribute('data-diet');
+      currentDiet = btn.getAttribute('data-diet') || 'all';
       renderMenu();
     });
   });
 
-  // Live search input
+  // Bind Live Search Input
   const searchInput = document.getElementById('menuSearchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -212,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sort dropdown
+  // Bind Sort Dropdown
   const sortSelect = document.getElementById('menuSortSelect');
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
@@ -221,6 +214,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial render
+  // Quick View Modal
+  window.openDishQuickView = function(dishId) {
+    if (typeof getAllMenuItems !== 'function') return;
+    const dish = getAllMenuItems().find(d => d.id === dishId);
+    if (!dish) return;
+
+    const modal = document.getElementById('dishQuickViewModal');
+    if (!modal) return;
+
+    const imgEl = document.getElementById('quickViewImage');
+    const titleEl = document.getElementById('quickViewTitle');
+    const badgeEl = document.getElementById('quickViewBadge');
+    const descEl = document.getElementById('quickViewDesc');
+    const priceEl = document.getElementById('quickViewPrice');
+    const portionEl = document.getElementById('quickViewPortion');
+    const prepEl = document.getElementById('quickViewPrep');
+    const ratingEl = document.getElementById('quickViewRating');
+    const addBtn = document.getElementById('quickViewAddBtn');
+
+    if (imgEl) imgEl.src = dish.image;
+    if (titleEl) titleEl.textContent = dish.name;
+    if (badgeEl) badgeEl.textContent = dish.badge || (dish.isVeg ? 'Vegetarian' : 'Non-Vegetarian');
+    if (descEl) descEl.textContent = dish.description;
+    if (priceEl) priceEl.textContent = `₹${dish.price}`;
+    if (portionEl) portionEl.textContent = dish.portion || 'Standard Portion';
+    if (prepEl) prepEl.textContent = dish.prepTime || '15 min';
+    if (ratingEl) ratingEl.textContent = `★ ${dish.rating} (${dish.reviewsCount} reviews)`;
+
+    if (addBtn) {
+      addBtn.onclick = () => {
+        if (window.noshCart) {
+          window.noshCart.addItem(dish, 1);
+        }
+        modal.classList.remove('open');
+      };
+    }
+
+    modal.classList.add('open');
+  };
+
+  // Initial load
+  updateCategoryPillCounts();
   renderMenu();
 });

@@ -1,7 +1,7 @@
 {
-  "name": "puthari-restaurant-website",
+  "name": "nosh-resto-cafe-website",
   "version": "1.0.0",
-  "description": "Premium modern responsive website and ordering demo for Puthari Restaurant, Kampalapura, Karnataka",
+  "description": "Premium modern responsive website, interactive menu, and ordering demo for Nosh Resto Cafe, Panchavalli, Karnataka",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -9,13 +9,16 @@
   },
   "keywords": [
     "restaurant",
-    "puthari-restaurant",
-    "kampalapura",
+    "cafe",
+    "nosh-resto-cafe",
+    "panchavalli",
+    "karnataka",
+    "thalassery-mysore-road",
     "biriyani",
-    "family-restaurant",
+    "kerbside-pickup",
     "express"
   ],
-  "author": "Puthari Restaurant Dev Team",
+  "author": "Nosh Resto Cafe Web Architecture Team",
   "license": "ISC",
   "dependencies": {
     "express": "^4.22.3"

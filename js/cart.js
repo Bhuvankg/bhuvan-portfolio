@@ -1,22 +1,28 @@
 /**
- * PUTHARI RESTAURANT — Shopping Cart & Online Ordering Engine
+ * NOSH RESTO CAFE — Shopping Cart & Online Ordering Engine
+ * Location: Panchavalli, Gonikoppa, Thalassery–Mysore Road, Karnataka
+ * Verified Contact: +91 98953 86886
+ * 
  * Features:
  * - LocalStorage persistence across all pages
  * - Quantity manipulation (+ / - / remove)
- * - Subtotal, packaging fee, and grand total calculations
- * - Multi-order mode (Dine-in / Takeaway / Delivery)
- * - Demo mode compliance & WhatsApp order text builder
- * - Backend /api/orders integration fallback
+ * - Subtotal, taxes & packaging calculations
+ * - Multi-order type selection: Dine-in | Kerbside pickup | No-contact delivery
+ * - Form validation (Name, 10-digit Indian Mobile, Delivery Address)
+ * - Demo Mode checkout flow with realistic receipt modal & timer
+ * - WhatsApp Order Builder with interactive Order Review modal
  */
 
-class PuthariCart {
+class NoshCart {
   constructor() {
-    this.storageKey = 'puthari_cart_items_v1';
-    this.orderTypeKey = 'puthari_order_type_v1';
+    this.storageKey = 'nosh_cart_items_v2';
+    this.orderTypeKey = 'nosh_order_type_v2';
+    this.restaurantPhone = '919895386886'; // +91 98953 86886 for WhatsApp
+    this.restaurantDisplayPhone = '+91 98953 86886';
+    
     this.items = this.loadCart();
-    this.orderType = localStorage.getItem(this.orderTypeKey) || 'dinein'; // 'dinein' | 'takeaway' | 'delivery'
-    this.packagingFee = 30; // ₹30 for takeaway & delivery
-
+    this.orderType = localStorage.getItem(this.orderTypeKey) || 'dinein'; // 'dinein' | 'kerbside' | 'delivery'
+    
     this.init();
   }
 
@@ -96,89 +102,115 @@ class PuthariCart {
     return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   }
 
-  getFee() {
-    if (this.orderType === 'dinein' || this.items.length === 0) {
-      return 0;
-    }
-    return this.packagingFee;
+  getPackagingDeliveryFee() {
+    if (this.items.length === 0) return 0;
+    if (this.orderType === 'dinein') return 0;
+    if (this.orderType === 'kerbside') return 15; // Minimal eco-packaging
+    if (this.orderType === 'delivery') return 40; // No-contact delivery fee
+    return 0;
   }
 
   getGrandTotal() {
-    return this.getSubtotal() + this.getFee();
-  }
-
-  getItemQuantity(id) {
-    const item = this.items.find(i => i.id === id);
-    return item ? item.quantity : 0;
+    if (this.items.length === 0) return 0;
+    return this.getSubtotal() + this.getPackagingDeliveryFee();
   }
 
   init() {
-    this.setupEventListeners();
+    this.bindEvents();
     this.updateUI();
   }
 
-  setupEventListeners() {
-    // Open cart drawer triggers
-    document.querySelectorAll('[data-action="open-cart"]').forEach(btn => {
+  bindEvents() {
+    // Drawer open / close
+    const openBtns = document.querySelectorAll('.js-open-cart');
+    const closeBtns = document.querySelectorAll('.js-close-cart');
+    const overlay = document.getElementById('cartDrawerOverlay');
+
+    openBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        this.openCartDrawer();
+        this.openDrawer();
       });
     });
 
-    // Close cart drawer triggers
-    document.querySelectorAll('[data-action="close-cart"]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this.closeCartDrawer();
+    closeBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.closeDrawer();
       });
     });
 
-    // Overlay click to close
-    const overlay = document.getElementById('cartDrawerOverlay');
     if (overlay) {
-      overlay.addEventListener('click', () => this.closeCartDrawer());
+      overlay.addEventListener('click', () => this.closeDrawer());
     }
 
-    // Checkout modal open trigger
-    const checkoutBtn = document.getElementById('btnProceedCheckout');
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', () => {
-        if (this.items.length === 0) {
-          this.showToast('Your cart is empty. Add dishes to proceed!');
-          return;
-        }
-        this.closeCartDrawer();
-        this.openCheckoutModal();
-      });
-    }
-
-    // Checkout modal close trigger
-    const closeCheckoutBtn = document.getElementById('btnCloseCheckout');
-    if (closeCheckoutBtn) {
-      closeCheckoutBtn.addEventListener('click', () => {
-        this.closeCheckoutModal();
-      });
-    }
-
-    // Order type buttons inside drawer
-    document.querySelectorAll('.order-type-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const type = btn.getAttribute('data-type');
+    // Order Type Tabs inside drawer
+    const orderTypeTabs = document.querySelectorAll('.order-type-tab-btn');
+    orderTypeTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        const type = tab.getAttribute('data-type');
+        orderTypeTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
         this.setOrderType(type);
       });
     });
 
-    // Checkout Form Submission
-    const checkoutForm = document.getElementById('orderCheckoutForm');
-    if (checkoutForm) {
-      checkoutForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        this.handleOrderSubmission(checkoutForm);
+    // Checkout modal trigger
+    const btnProceedCheckout = document.getElementById('btnProceedCheckout');
+    if (btnProceedCheckout) {
+      btnProceedCheckout.addEventListener('click', () => {
+        if (this.items.length === 0) {
+          this.showToast('Your cart is empty. Please add items first!');
+          return;
+        }
+        this.closeDrawer();
+        this.openCheckoutModal();
       });
+    }
+
+    // WhatsApp Direct Order Trigger
+    const btnOrderWhatsApp = document.getElementById('btnOrderWhatsApp');
+    if (btnOrderWhatsApp) {
+      btnOrderWhatsApp.addEventListener('click', () => {
+        if (this.items.length === 0) {
+          this.showToast('Your cart is empty. Add dishes to place an order!');
+          return;
+        }
+        this.openWhatsAppReviewModal();
+      });
+    }
+
+    // Modal Close buttons
+    const modalCloses = document.querySelectorAll('.js-close-modal');
+    modalCloses.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+      });
+    });
+
+    // Order Form Submission
+    const checkoutForm = document.getElementById('checkoutOrderForm');
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', (e) => this.handleCheckoutSubmit(e));
+    }
+
+    // Order type change in checkout modal
+    const modalOrderTypeSelect = document.getElementById('modalOrderType');
+    if (modalOrderTypeSelect) {
+      modalOrderTypeSelect.addEventListener('change', (e) => {
+        this.setOrderType(e.target.value);
+        this.syncDeliveryAddressVisibility(e.target.value);
+      });
+    }
+
+    // WhatsApp Confirm Send
+    const btnSendWhatsAppFinal = document.getElementById('btnSendWhatsAppFinal');
+    if (btnSendWhatsAppFinal) {
+      btnSendWhatsAppFinal.addEventListener('click', () => this.sendToWhatsApp());
     }
   }
 
-  openCartDrawer() {
+  openDrawer() {
     const drawer = document.getElementById('cartDrawer');
     const overlay = document.getElementById('cartDrawerOverlay');
     if (drawer) drawer.classList.add('open');
@@ -186,7 +218,7 @@ class PuthariCart {
     document.body.style.overflow = 'hidden';
   }
 
-  closeCartDrawer() {
+  closeDrawer() {
     const drawer = document.getElementById('cartDrawer');
     const overlay = document.getElementById('cartDrawerOverlay');
     if (drawer) drawer.classList.remove('open');
@@ -194,236 +226,387 @@ class PuthariCart {
     document.body.style.overflow = '';
   }
 
-  openCheckoutModal() {
-    const modal = document.getElementById('checkoutModal');
-    if (modal) {
-      modal.classList.add('open');
-      this.populateCheckoutSummary();
-      document.body.style.overflow = 'hidden';
-    }
-  }
-
-  closeCheckoutModal() {
-    const modal = document.getElementById('checkoutModal');
-    if (modal) {
-      modal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  }
-
   updateUI() {
     const count = this.getTotalCount();
     const subtotal = this.getSubtotal();
-    const fee = this.getFee();
-    const total = this.getGrandTotal();
+    const fee = this.getPackagingDeliveryFee();
+    const grandTotal = this.getGrandTotal();
 
-    // Update all badge counts
+    // Update Badges
     document.querySelectorAll('.cart-badge-count').forEach(badge => {
       badge.textContent = count;
       badge.style.display = count > 0 ? 'inline-flex' : 'none';
     });
 
-    // Update drawer item list
-    const container = document.getElementById('cartItemsContainer');
-    const emptyState = document.getElementById('cartEmptyState');
-    const footer = document.getElementById('cartDrawerFooter');
+    // Mobile bottom badge
+    document.querySelectorAll('.mobile-bottom-badge').forEach(badge => {
+      badge.textContent = count;
+      badge.style.display = count > 0 ? 'flex' : 'none';
+    });
 
-    if (container) {
-      if (this.items.length === 0) {
-        container.innerHTML = '';
-        if (emptyState) emptyState.style.display = 'flex';
-        if (footer) footer.style.display = 'none';
+    // Floating cart button
+    const floatCartBtn = document.getElementById('floatingCartBtn');
+    if (floatCartBtn) {
+      floatCartBtn.style.display = count > 0 ? 'flex' : 'none';
+    }
+
+    // Update Drawer Order Type Tabs
+    document.querySelectorAll('.order-type-tab-btn').forEach(tab => {
+      if (tab.getAttribute('data-type') === this.orderType) {
+        tab.classList.add('active');
       } else {
-        if (emptyState) emptyState.style.display = 'none';
-        if (footer) footer.style.display = 'flex';
+        tab.classList.remove('active');
+      }
+    });
 
-        container.innerHTML = this.items.map(item => `
-          <div class="cart-item-card" data-id="${item.id}">
-            <img src="${item.image}" alt="${item.name}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=200&q=80'">
-            <div class="cart-item-info">
+    // Render Drawer Items
+    const itemsContainer = document.getElementById('cartDrawerItems');
+    if (itemsContainer) {
+      if (this.items.length === 0) {
+        itemsContainer.innerHTML = `
+          <div class="cart-empty-state">
+            <div class="cart-empty-icon">☕</div>
+            <h4>Your cart is empty</h4>
+            <p>Explore Nosh Resto Cafe's flavorful menu and add your favorite dishes.</p>
+            <a href="menu.html" class="btn btn-primary btn-sm" onclick="noshCart.closeDrawer()">Explore Menu</a>
+          </div>
+        `;
+      } else {
+        itemsContainer.innerHTML = this.items.map(item => `
+          <div class="cart-item-row" data-id="${item.id}">
+            <img src="${item.image}" alt="${item.name}" class="cart-item-img" loading="lazy">
+            <div class="cart-item-details">
               <div class="cart-item-name">${item.name}</div>
-              <div class="cart-item-price">₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}</div>
+              <div class="cart-item-price-each">₹${item.price} each</div>
+              <div class="cart-item-stepper-wrap">
+                <div class="qty-stepper">
+                  <button type="button" class="qty-step-btn" onclick="noshCart.updateQuantity('${item.id}', -1)" aria-label="Decrease quantity">−</button>
+                  <span class="qty-count-val">${item.quantity}</span>
+                  <button type="button" class="qty-step-btn" onclick="noshCart.updateQuantity('${item.id}', 1)" aria-label="Increase quantity">+</button>
+                </div>
+              </div>
             </div>
-            <div class="cart-item-actions">
-              <button class="cart-qty-btn" onclick="window.puthariCart.updateQuantity('${item.id}', -1)">-</button>
-              <span class="cart-qty-text">${item.quantity}</span>
-              <button class="cart-qty-btn" onclick="window.puthariCart.updateQuantity('${item.id}', 1)">+</button>
-              <button class="cart-item-remove-btn" title="Remove" onclick="window.puthariCart.removeItem('${item.id}')">✕</button>
+            <div class="cart-item-total-col">
+              <div class="cart-item-line-total">₹${item.price * item.quantity}</div>
+              <button type="button" class="btn-remove-cart-item" onclick="noshCart.removeItem('${item.id}')" title="Remove Item">✕</button>
             </div>
           </div>
         `).join('');
       }
     }
 
-    // Update order type buttons active state
-    document.querySelectorAll('.order-type-btn').forEach(btn => {
-      const type = btn.getAttribute('data-type');
-      if (type === this.orderType) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    // Update prices in drawer footer
-    const subtotalEl = document.getElementById('cartSubtotalAmount');
-    const feeEl = document.getElementById('cartFeeAmount');
-    const totalEl = document.getElementById('cartGrandTotalAmount');
-    const feeRowEl = document.getElementById('cartFeeRow');
+    // Update Bill Breakdown
+    const subtotalEl = document.getElementById('cartSubtotalValue');
+    const feeLabelEl = document.getElementById('cartFeeLabel');
+    const feeValueEl = document.getElementById('cartFeeValue');
+    const grandTotalEl = document.getElementById('cartGrandTotalValue');
 
     if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
-    if (feeEl) feeEl.textContent = `₹${fee}`;
-    if (totalEl) totalEl.textContent = `₹${total}`;
-    if (feeRowEl) {
-      feeRowEl.style.display = (this.orderType === 'dinein' || count === 0) ? 'none' : 'flex';
+    if (grandTotalEl) grandTotalEl.textContent = `₹${grandTotal}`;
+
+    if (feeLabelEl && feeValueEl) {
+      if (this.orderType === 'dinein') {
+        feeLabelEl.textContent = 'Dine-in Service';
+        feeValueEl.textContent = 'Free';
+      } else if (this.orderType === 'kerbside') {
+        feeLabelEl.textContent = 'Kerbside Packaging';
+        feeValueEl.textContent = '₹15';
+      } else {
+        feeLabelEl.textContent = 'No-Contact Delivery Fee';
+        feeValueEl.textContent = '₹40';
+      }
     }
 
-    // Refresh menu cards on page if menu renderer exists
-    if (typeof window.refreshCardButtons === 'function') {
-      window.refreshCardButtons();
+    // Enable/disable buttons based on cart
+    const proceedBtn = document.getElementById('btnProceedCheckout');
+    const waBtn = document.getElementById('btnOrderWhatsApp');
+    if (proceedBtn) proceedBtn.disabled = this.items.length === 0;
+    if (waBtn) waBtn.disabled = this.items.length === 0;
+
+    // Sync menu card steppers if present on page
+    this.syncMenuCardControls();
+  }
+
+  syncMenuCardControls() {
+    document.querySelectorAll('.food-card').forEach(card => {
+      const id = card.getAttribute('data-id');
+      const actionWrap = card.querySelector('.food-card-action-wrap');
+      if (!actionWrap || !id) return;
+
+      const inCart = this.items.find(i => i.id === id);
+      if (inCart) {
+        actionWrap.innerHTML = `
+          <div class="qty-stepper">
+            <button type="button" class="qty-step-btn" onclick="noshCart.updateQuantity('${id}', -1)" aria-label="Decrease quantity">−</button>
+            <span class="qty-count-val">${inCart.quantity}</span>
+            <button type="button" class="qty-step-btn" onclick="noshCart.updateQuantity('${id}', 1)" aria-label="Increase quantity">+</button>
+          </div>
+        `;
+      } else {
+        actionWrap.innerHTML = `
+          <button type="button" class="btn-add-cart" onclick="noshCart.addFromCard('${id}')">
+            <span>+ Add</span>
+          </button>
+        `;
+      }
+    });
+  }
+
+  addFromCard(id) {
+    if (typeof getAllMenuItems === 'function') {
+      const allDishes = getAllMenuItems();
+      const dish = allDishes.find(d => d.id === id);
+      if (dish) {
+        this.addItem(dish, 1);
+      }
     }
   }
 
-  populateCheckoutSummary() {
-    const listEl = document.getElementById('checkoutItemsReview');
-    const totalEl = document.getElementById('checkoutTotalDisplay');
-    const typeNotice = document.getElementById('checkoutOrderTypeNotice');
+  openCheckoutModal() {
+    const modal = document.getElementById('checkoutModal');
+    if (!modal) return;
 
-    if (listEl) {
-      listEl.innerHTML = this.items.map(item => `
-        <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-          <span>${item.name} <strong>× ${item.quantity}</strong></span>
-          <span style="color:var(--color-gold-light)">₹${item.price * item.quantity}</span>
+    // Sync select dropdown
+    const select = document.getElementById('modalOrderType');
+    if (select) {
+      select.value = this.orderType;
+      this.syncDeliveryAddressVisibility(this.orderType);
+    }
+
+    // Sync summary in modal
+    const summaryList = document.getElementById('modalOrderSummaryList');
+    if (summaryList) {
+      summaryList.innerHTML = this.items.map(item => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.86rem; color:var(--color-cream-muted);">
+          <span>${item.quantity}x ${item.name}</span>
+          <span style="color:var(--color-gold-light); font-weight:600;">₹${item.price * item.quantity}</span>
         </div>
       `).join('');
     }
 
-    if (totalEl) {
-      totalEl.textContent = `₹${this.getGrandTotal()}`;
-    }
+    const modalTotal = document.getElementById('modalGrandTotal');
+    if (modalTotal) modalTotal.textContent = `₹${this.getGrandTotal()}`;
 
-    if (typeNotice) {
-      const typeLabels = {
-        'dinein': 'Dine-In (At Kampalapura restaurant)',
-        'takeaway': 'Takeaway / Drive-Through Pickup',
-        'delivery': 'No-Contact Local Delivery'
-      };
-      typeNotice.textContent = typeLabels[this.orderType] || this.orderType;
+    modal.classList.add('open');
+  }
+
+  syncDeliveryAddressVisibility(type) {
+    const addrGroup = document.getElementById('deliveryAddressGroup');
+    const addrInput = document.getElementById('customerAddress');
+    if (!addrGroup) return;
+
+    if (type === 'delivery') {
+      addrGroup.style.display = 'block';
+      if (addrInput) addrInput.required = true;
+    } else {
+      addrGroup.style.display = 'none';
+      if (addrInput) addrInput.required = false;
     }
   }
 
-  async handleOrderSubmission(form) {
-    const formData = new FormData(form);
-    const customerName = formData.get('customerName');
-    const customerPhone = formData.get('customerPhone');
-    const notes = formData.get('orderNotes') || 'None';
-    const locationDetail = formData.get('locationDetail') || (this.orderType === 'dinein' ? 'Table at Restaurant' : 'Kampalapura');
+  handleCheckoutSubmit(e) {
+    e.preventDefault();
 
-    if (!customerName || !customerPhone) {
-      this.showToast('Please provide your name and phone number');
+    const nameInput = document.getElementById('customerName');
+    const phoneInput = document.getElementById('customerPhone');
+    const orderTypeSelect = document.getElementById('modalOrderType');
+    const addressInput = document.getElementById('customerAddress');
+    const notesInput = document.getElementById('customerNotes');
+
+    const name = nameInput ? nameInput.value.trim() : '';
+    const phone = phoneInput ? phoneInput.value.trim() : '';
+    const orderType = orderTypeSelect ? orderTypeSelect.value : this.orderType;
+    const address = addressInput ? addressInput.value.trim() : '';
+    const notes = notesInput ? notesInput.value.trim() : '';
+
+    // Validation
+    if (name.length < 2) {
+      this.showToast('Please enter your full name (minimum 2 characters).');
+      if (nameInput) nameInput.focus();
       return;
     }
 
-    const orderPayload = {
-      orderId: 'PUTHARI-' + Math.floor(100000 + Math.random() * 900000),
-      date: new Date().toISOString(),
-      customerName,
-      customerPhone,
-      orderType: this.orderType,
-      locationDetail,
+    const phoneRegex = /^[6-9]\d{9}$/;
+    const cleanPhone = phone.replace(/[^0-9]/g, '').slice(-10);
+    if (!phoneRegex.test(cleanPhone)) {
+      this.showToast('Please enter a valid 10-digit Indian mobile number.');
+      if (phoneInput) phoneInput.focus();
+      return;
+    }
+
+    if (orderType === 'delivery' && address.length < 10) {
+      this.showToast('Please enter a complete delivery address with landmark.');
+      if (addressInput) addressInput.focus();
+      return;
+    }
+
+    // Build Demo Order Object
+    const orderId = 'NOSH-' + Math.floor(100000 + Math.random() * 900000);
+    const orderData = {
+      orderId,
+      customerName: name,
+      customerPhone: cleanPhone,
+      orderType,
+      address: orderType === 'delivery' ? address : 'N/A',
       notes,
-      items: this.items,
+      items: [...this.items],
       subtotal: this.getSubtotal(),
-      fee: this.getFee(),
+      fee: this.getPackagingDeliveryFee(),
       grandTotal: this.getGrandTotal(),
-      isDemo: true
+      createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      estimatedTime: orderType === 'dinein' ? '15-20 min' : (orderType === 'kerbside' ? '20-25 min' : '30-40 min')
     };
 
-    // Try posting to local Node.js backend if reachable
-    try {
-      fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderPayload)
-      }).catch(() => {});
-    } catch (e) {}
+    // Attempt to post to local backend demo server if running
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    }).catch(err => console.log('Demo mode: backend offline or demo API responded:', err));
 
-    // Show Order Confirmation Card
-    this.showConfirmationView(orderPayload);
+    // Close checkout modal & show confirmation screen
+    const checkoutModal = document.getElementById('checkoutModal');
+    if (checkoutModal) checkoutModal.classList.remove('open');
+
+    this.showConfirmationModal(orderData);
   }
 
-  showConfirmationView(order) {
-    const modalBody = document.querySelector('.checkout-modal-body');
-    if (!modalBody) return;
+  showConfirmationModal(order) {
+    const modal = document.getElementById('orderConfirmationModal');
+    if (!modal) return;
 
-    // Create WhatsApp text message
-    let waText = `*New Order Request — PUTHARI RESTAURANT*\n`;
-    waText += `*Order ID:* ${order.orderId}\n`;
-    waText += `*Customer:* ${order.customerName} (${order.customerPhone})\n`;
-    waText += `*Dining Option:* ${order.orderType.toUpperCase()} (${order.locationDetail})\n`;
-    waText += `\n*Items:*\n`;
-    order.items.forEach(i => {
-      waText += `• ${i.name} × ${i.quantity} = ₹${i.price * i.quantity}\n`;
-    });
-    if (order.fee > 0) {
-      waText += `• Packaging/Delivery: ₹${order.fee}\n`;
+    // Fill confirmation data
+    const idEl = document.getElementById('confirmOrderId');
+    const nameEl = document.getElementById('confirmCustomerName');
+    const typeEl = document.getElementById('confirmOrderType');
+    const timeEl = document.getElementById('confirmEstimatedTime');
+    const totalEl = document.getElementById('confirmGrandTotal');
+    const itemsEl = document.getElementById('confirmItemsList');
+
+    if (idEl) idEl.textContent = '#' + order.orderId;
+    if (nameEl) nameEl.textContent = order.customerName;
+    if (typeEl) {
+      const typeLabels = {
+        'dinein': 'Dine-In Experience',
+        'kerbside': 'Kerbside Roadside Pickup',
+        'delivery': 'No-Contact Delivery'
+      };
+      typeEl.textContent = typeLabels[order.orderType] || order.orderType;
     }
-    waText += `\n*Total Amount:* ₹${order.grandTotal}\n`;
-    if (order.notes && order.notes !== 'None') {
-      waText += `*Special Notes:* ${order.notes}\n`;
+    if (timeEl) timeEl.textContent = order.estimatedTime;
+    if (totalEl) totalEl.textContent = `₹${order.grandTotal}`;
+
+    if (itemsEl) {
+      itemsEl.innerHTML = order.items.map(item => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:0.86rem; color:var(--color-cream-muted);">
+          <span>${item.quantity}x ${item.name}</span>
+          <span style="color:var(--color-gold-light);">₹${item.price * item.quantity}</span>
+        </div>
+      `).join('');
     }
-    waText += `\n_(Placed via Puthari Restaurant Website)_`;
 
-    const encodedWa = encodeURIComponent(waText);
-    const waUrl = `https://wa.me/?text=${encodedWa}`;
+    // Set WhatsApp link button on confirmation modal
+    const waConfirmBtn = document.getElementById('btnConfirmOrderWhatsApp');
+    if (waConfirmBtn) {
+      waConfirmBtn.onclick = () => {
+        this.openWhatsAppWithText(this.buildWhatsAppMessage(order));
+      };
+    }
 
-    modalBody.innerHTML = `
-      <div style="text-align:center; padding: 10px 0;">
-        <div style="font-size:3rem; color:var(--color-gold); margin-bottom:12px;">✓</div>
-        <h3 style="font-family:var(--font-serif); font-size:1.6rem; color:#FFFFFF; margin-bottom:6px;">Order Request Created</h3>
-        <p style="font-size:0.85rem; color:var(--color-gold-light); margin-bottom:16px;">Order Reference: <strong>${order.orderId}</strong></p>
-        
-        <div class="demo-mode-pill" style="margin-bottom:20px; text-align:left;">
-          <strong>Demo Notice:</strong> Online order processing is currently in presentation mode. No payment was deducted. To share this order directly with the restaurant team or save your copy, use the WhatsApp button below.
-        </div>
+    modal.classList.add('open');
 
-        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; text-align:left; font-size:0.88rem; margin-bottom:24px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span style="color:var(--color-text-muted)">Customer:</span>
-            <span style="color:#FFF; font-weight:600;">${order.customerName}</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span style="color:var(--color-text-muted)">Order Type:</span>
-            <span style="color:var(--color-gold); font-weight:600; text-transform:capitalize;">${order.orderType}</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span style="color:var(--color-text-muted)">Total Bill:</span>
-            <span style="color:var(--color-gold-light); font-weight:700; font-size:1.1rem;">₹${order.grandTotal}</span>
-          </div>
-          <div style="font-size:0.8rem; color:var(--color-text-muted); margin-top:8px;">
-            Items: ${order.items.map(i => `${i.name} (${i.quantity})`).join(', ')}
-          </div>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background:#25D366; color:#FFFFFF; border:none;">
-            <span>💬 Send Order to Restaurant WhatsApp</span>
-          </a>
-          <button type="button" class="btn btn-secondary" onclick="window.puthariCart.finishOrderDemo()">
-            Close & Clear Cart
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  finishOrderDemo() {
+    // Clear cart once order is confirmed
     this.clearCart();
-    this.closeCheckoutModal();
-    // Reload checkout modal HTML for future uses
-    setTimeout(() => {
-      window.location.reload();
-    }, 300);
+  }
+
+  openWhatsAppReviewModal() {
+    const modal = document.getElementById('whatsAppReviewModal');
+    if (!modal) {
+      // Direct fallback
+      this.sendToWhatsApp();
+      return;
+    }
+
+    this.closeDrawer();
+
+    // Populate review preview
+    const previewBox = document.getElementById('whatsAppMessagePreview');
+    const sampleCustomer = {
+      customerName: (document.getElementById('customerName')?.value.trim()) || 'Valued Customer',
+      customerPhone: (document.getElementById('customerPhone')?.value.trim()) || 'Not provided',
+      orderType: this.orderType,
+      address: (document.getElementById('customerAddress')?.value.trim()) || 'Panchavalli Area',
+      notes: (document.getElementById('customerNotes')?.value.trim()) || 'None'
+    };
+
+    const text = this.buildWhatsAppMessage(sampleCustomer);
+    if (previewBox) {
+      previewBox.textContent = text;
+    }
+
+    modal.classList.add('open');
+  }
+
+  buildWhatsAppMessage(customer) {
+    const typeLabels = {
+      'dinein': 'Dine-in at Nosh Resto Cafe',
+      'kerbside': 'Kerbside Roadside Pickup',
+      'delivery': 'No-contact Delivery'
+    };
+
+    let msg = `*🍽️ ORDER FOR NOSH RESTO CAFE*\n`;
+    msg += `------------------------------\n`;
+    msg += `*Order Type:* ${typeLabels[customer.orderType || this.orderType] || this.orderType}\n`;
+    if (customer.orderId) msg += `*Order Ref:* #${customer.orderId}\n`;
+    if (customer.customerName) msg += `*Customer:* ${customer.customerName}\n`;
+    if (customer.customerPhone && customer.customerPhone !== 'Not provided') msg += `*Phone:* +91 ${customer.customerPhone}\n`;
+    if (customer.orderType === 'delivery' && customer.address) {
+      msg += `*Delivery Address:* ${customer.address}\n`;
+    }
+    if (customer.notes && customer.notes !== 'None') {
+      msg += `*Special Instructions:* ${customer.notes}\n`;
+    }
+    msg += `------------------------------\n`;
+    msg += `*ITEMS ORDERED:*\n`;
+
+    const itemsToFormat = customer.items || this.items;
+    itemsToFormat.forEach(item => {
+      msg += `• ${item.quantity}x ${item.name} — ₹${item.price * item.quantity}\n`;
+    });
+
+    msg += `------------------------------\n`;
+    msg += `*Subtotal:* ₹${customer.subtotal || this.getSubtotal()}\n`;
+    const fee = customer.fee !== undefined ? customer.fee : this.getPackagingDeliveryFee();
+    if (fee > 0) {
+      msg += `*Packaging / Delivery:* ₹${fee}\n`;
+    }
+    msg += `*Estimated Grand Total:* ₹${customer.grandTotal || this.getGrandTotal()}\n\n`;
+    msg += `_Note: Sample menu demo. Kindly confirm availability and preparation time with Nosh Resto Cafe._`;
+
+    return msg;
+  }
+
+  sendToWhatsApp() {
+    const customer = {
+      customerName: (document.getElementById('customerName')?.value.trim()) || 'Customer',
+      customerPhone: (document.getElementById('customerPhone')?.value.trim()) || '',
+      orderType: this.orderType,
+      address: (document.getElementById('customerAddress')?.value.trim()) || '',
+      notes: (document.getElementById('customerNotes')?.value.trim()) || ''
+    };
+
+    const text = this.buildWhatsAppMessage(customer);
+    this.openWhatsAppWithText(text);
+
+    // Close review modal
+    const reviewModal = document.getElementById('whatsAppReviewModal');
+    if (reviewModal) reviewModal.classList.remove('open');
+  }
+
+  openWhatsAppWithText(text) {
+    const encoded = encodeURIComponent(text);
+    const waUrl = `https://wa.me/${this.restaurantPhone}?text=${encoded}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
   }
 
   showToast(message) {
@@ -436,19 +619,22 @@ class PuthariCart {
     }
 
     const toast = document.createElement('div');
-    toast.className = 'toast-msg';
-    toast.innerHTML = `<span>✨</span><span>${message}</span>`;
+    toast.className = 'toast-message';
+    toast.textContent = message;
+
     container.appendChild(toast);
 
     setTimeout(() => {
-      if (toast.parentNode) {
-        toast.parentNode.removeChild(toast);
-      }
-    }, 3000);
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 2800);
   }
 }
 
-// Global initialization
+// Global Cart Instance
+let noshCart;
 document.addEventListener('DOMContentLoaded', () => {
-  window.puthariCart = new PuthariCart();
+  noshCart = new NoshCart();
+  window.noshCart = noshCart;
 });

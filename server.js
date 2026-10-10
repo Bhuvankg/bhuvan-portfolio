@@ -1,7 +1,8 @@
 /**
- * PUTHARI RESTAURANT — Production Web Server & Demo API
- * Location: BM Road, Kampalapura, Karnataka 571107
- * Plus Code: 85P2+2W Kampalapura, Karnataka
+ * NOSH RESTO CAFE — Production Web Server & Demo API
+ * Location: Panchavalli, Gonikoppa, Thalassery–Mysore Road, Panchavalli, Karnataka 571105
+ * Phone: +91 98953 86886
+ * Plus Code: 74PP+CM, Panchavalli, Karnataka
  */
 
 const fs = require('fs');
@@ -12,34 +13,39 @@ const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 // Import menu data from shared js module
-let PUTHARI_MENU = [];
+let NOSH_MENU = [];
 try {
   const menuModule = require('./js/menu-data.js');
-  PUTHARI_MENU = menuModule.PUTHARI_MENU || [];
+  NOSH_MENU = menuModule.NOSH_MENU || [];
 } catch (e) {
   console.log('Notice: Loading menu directly from JSON cache');
 }
 
-// In-memory demo stores (can be hooked to MySQL / MongoDB in production)
+// In-memory demo stores
 const demoOrders = [];
 const demoInquiries = [];
 
 const RESTAURANT_INFO = {
-  name: "Puthari Restaurant",
-  category: "Family Restaurant",
-  tagline: "Great Taste. Warm Hospitality. Memorable Moments.",
-  address: "BM Road, Kampalapura, Karnataka 571107, India",
-  plusCode: "85P2+2W Kampalapura, Karnataka",
-  googleRating: 3.9,
-  reviewsCount: 64,
-  priceRange: "₹200 - ₹400 per person",
-  diningOptions: ["Dine-in", "Drive-through", "No-contact delivery"],
-  popularFood: ["Biriyani", "Egg Chilli", "Chicken Specials", "Ghee Rice"],
-  businessHours: "Daily 11:00 AM – 2:00 AM (Verify opening hours before publishing)",
-  closingTime: "2:00 AM"
+  name: "Nosh Resto Cafe",
+  category: "Restaurant and café",
+  tagline: "Good Food. Great Vibes. Unforgettable Moments.",
+  address: "Panchavalli, Gonikoppa, Thalassery–Mysore Road, Panchavalli, Karnataka 571105, India",
+  phone: "+91 98953 86886",
+  plusCode: "74PP+CM, Panchavalli, Karnataka",
+  googleRating: 4.7,
+  reviewsCount: 34,
+  priceRange: "₹200–₹400 per person",
+  services: ["Dine-in", "Kerbside pickup", "No-contact delivery"],
+  closingTime: "2:00 AM (Verify complete operating hours before publishing)",
+  feedbackThemes: [
+    "Delicious and freshly prepared food",
+    "Good food variety",
+    "Fast service",
+    "Positive dining experiences",
+    "Late-night food options may vary in late hours"
+  ]
 };
 
-// Try using Express if available, otherwise use native Node http server
 let appServer;
 
 try {
@@ -61,7 +67,7 @@ try {
   });
 
   app.get('/api/menu', (req, res) => {
-    let items = [...PUTHARI_MENU];
+    let items = [...NOSH_MENU];
     const { category, isVeg, q } = req.query;
 
     if (category && category !== 'all') {
@@ -79,39 +85,39 @@ try {
     res.json({
       success: true,
       count: items.length,
-      sampleNote: "Sample menu items and editable placeholder prices.",
+      sampleNote: "Sample menu dishes and placeholder prices for demonstration. Official restaurant menu may vary.",
       data: items
     });
   });
 
   app.post('/api/orders', (req, res) => {
-    const { customerName, customerPhone, items, grandTotal, orderType, notes, locationDetail } = req.body;
+    const { customerName, customerPhone, items, grandTotal, orderType, notes, address } = req.body;
     
     if (!customerName || !customerPhone || !items || items.length === 0) {
       return res.status(400).json({ success: false, message: "Missing required order parameters." });
     }
 
     const newOrder = {
-      orderId: req.body.orderId || ('PUTHARI-' + Math.floor(100000 + Math.random() * 900000)),
+      orderId: req.body.orderId || ('NOSH-' + Math.floor(100000 + Math.random() * 900000)),
       createdAt: new Date().toISOString(),
       customerName,
       customerPhone,
       orderType: orderType || 'dinein',
-      locationDetail: locationDetail || 'Not specified',
+      address: address || 'N/A',
       notes: notes || '',
       items,
       grandTotal: grandTotal || 0,
-      status: 'received_demo'
+      status: 'demo_received'
     };
 
     demoOrders.unshift(newOrder);
     if (demoOrders.length > 50) demoOrders.pop();
 
-    console.log(`[ORDER RECEIVED] ${newOrder.orderId} for ${newOrder.customerName} - Total: ₹${newOrder.grandTotal}`);
+    console.log(`[ORDER RECEIVED] ${newOrder.orderId} for ${newOrder.customerName} - Total: ₹${newOrder.grandTotal} (${newOrder.orderType})`);
 
     res.status(201).json({
       success: true,
-      message: "Order received in demonstration mode.",
+      message: "Order recorded in demonstration mode. For actual orders, contact +91 98953 86886 or use WhatsApp.",
       order: newOrder
     });
   });
@@ -127,12 +133,12 @@ try {
       ...req.body
     };
     demoInquiries.unshift(inquiry);
-    console.log(`[INQUIRY/RESERVATION] From ${inquiry.name} (${inquiry.phone}) for ${inquiry.guests || 'N/A'}`);
-    res.status(201).json({ success: true, message: "Inquiry received.", data: inquiry });
+    console.log(`[INQUIRY RECEIVED] From ${inquiry.name} (${inquiry.phone}) for ${inquiry.serviceType || 'General'}`);
+    res.status(201).json({ success: true, message: "Inquiry received in demo mode.", data: inquiry });
   });
 
   app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date() });
+    res.json({ status: 'ok', restaurant: 'Nosh Resto Cafe', uptime: process.uptime(), timestamp: new Date() });
   });
 
   // Serve static files
@@ -146,20 +152,21 @@ try {
   appServer = app.listen(PORT, HOST, () => {
     console.log(`
 =============================================================
-  🍛 PUTHARI RESTAURANT — WEB SERVER ACTIVE (Express)
+  ☕ NOSH RESTO CAFE — WEB SERVER ACTIVE (Express)
 =============================================================
   • Local Address:    http://localhost:${PORT}
-  • Address:          BM Road, Kampalapura, Karnataka 571107
-  • Plus Code:        85P2+2W Kampalapura, Karnataka
-  • Google Rating:    3.9/5 (64 reviews)
+  • Address:          Panchavalli, Gonikoppa, Thalassery–Mysore Road
+  • Phone:            +91 98953 86886
+  • Plus Code:        74PP+CM, Panchavalli, Karnataka
+  • Google Rating:    4.7 / 5.0 (34 reviews)
   • Ready to serve!
 =============================================================
     `);
   });
 
 } catch (err) {
-  // Fallback Native Node HTTP Server if express is not installed yet
-  console.log('Express not yet installed. Running with native Node.js HTTP server...');
+  // Fallback Native Node HTTP Server if express is not installed
+  console.log('Express not loaded. Running with native Node.js HTTP server...');
 
   const MIME_TYPES = {
     '.html': 'text/html',
@@ -173,7 +180,6 @@ try {
   };
 
   const server = http.createServer((req, res) => {
-    // API routes in native mode
     if (req.url === '/api/info') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ success: true, data: RESTAURANT_INFO }));
@@ -181,7 +187,7 @@ try {
 
     if (req.url.startsWith('/api/menu')) {
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({ success: true, count: PUTHARI_MENU.length, data: PUTHARI_MENU }));
+      return res.end(JSON.stringify({ success: true, count: NOSH_MENU.length, data: NOSH_MENU }));
     }
 
     if (req.url === '/api/health') {
@@ -189,7 +195,6 @@ try {
       return res.end(JSON.stringify({ status: 'ok', mode: 'native-http' }));
     }
 
-    // Static file serving
     let safeUrl = req.url.split('?')[0];
     if (safeUrl === '/') safeUrl = '/index.html';
 
@@ -201,7 +206,7 @@ try {
       if (error) {
         if (error.code === 'ENOENT') {
           res.writeHead(404, { 'Content-Type': 'text/plain' });
-          res.end('404 Not Found - Puthari Restaurant');
+          res.end('404 Not Found - Nosh Resto Cafe');
         } else {
           res.writeHead(500);
           res.end('Server Error: ' + error.code);
@@ -216,11 +221,12 @@ try {
   appServer = server.listen(PORT, HOST, () => {
     console.log(`
 =============================================================
-  🍛 PUTHARI RESTAURANT — WEB SERVER ACTIVE (Native HTTP)
+  ☕ NOSH RESTO CAFE — WEB SERVER ACTIVE (Native HTTP)
 =============================================================
   • Local Address:    http://localhost:${PORT}
-  • Address:          BM Road, Kampalapura, Karnataka 571107
-  • Plus Code:        85P2+2W Kampalapura, Karnataka
+  • Address:          Panchavalli, Gonikoppa, Thalassery–Mysore Road
+  • Phone:            +91 98953 86886
+  • Plus Code:        74PP+CM, Panchavalli, Karnataka
 =============================================================
     `);
   });

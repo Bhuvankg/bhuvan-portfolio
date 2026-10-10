@@ -1,16 +1,17 @@
 /**
- * PUTHARI RESTAURANT — Core UI Controller & Global Interactivity
- * Kampalapura, Karnataka
+ * NOSH RESTO CAFE — Core UI Controller & Global Interactivity
+ * Location: Panchavalli, Gonikoppa, Thalassery–Mysore Road, Karnataka 571105
+ * Phone: +91 98953 86886
+ * Plus Code: 74PP+CM, Panchavalli, Karnataka
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initStickyHeader();
   initMobileNavigation();
-  initBackToTop();
-  initPlusCodeCopy();
-  initContactForm();
-  initGalleryLightbox();
   initHoursStatusBadge();
+  initPlusCodeCopy();
+  initBackToTop();
+  initContactForm();
 });
 
 /* Sticky Header on Scroll */
@@ -27,7 +28,7 @@ function initStickyHeader() {
   }, { passive: true });
 }
 
-/* Mobile Navigation Drawer */
+/* Mobile Drawer Navigation */
 function initMobileNavigation() {
   const toggleBtn = document.getElementById('mobileNavToggle');
   const drawer = document.getElementById('mobileNavDrawer');
@@ -59,170 +60,150 @@ function initMobileNavigation() {
 
   overlay.addEventListener('click', closeDrawer);
 
-  // Close when clicking any nav link
-  drawer.querySelectorAll('a').forEach(link => {
+  // Close when tapping any link inside the mobile drawer
+  drawer.querySelectorAll('.mobile-drawer-link').forEach(link => {
     link.addEventListener('click', closeDrawer);
   });
 }
 
-/* Back to Top Smooth Scroll */
+/* Opening Hours Status Indicator (Closing: 2:00 AM verified) */
+function initHoursStatusBadge() {
+  const statusPills = document.querySelectorAll('.hours-live-pill');
+  if (statusPills.length === 0) return;
+
+  const now = new Date();
+  const currentHour = now.getHours();
+
+  // Listed closing time: 2:00 AM.
+  // Between 2:00 AM and 10:00 AM, the cafe is typically closed.
+  const isLateClosed = (currentHour >= 2 && currentHour < 10);
+
+  statusPills.forEach(pill => {
+    if (isLateClosed) {
+      pill.innerHTML = `<span class="hours-live-dot" style="background:#e5a93b; box-shadow:0 0 6px #e5a93b;"></span> Reopens 10:00 AM • Closes 2:00 AM`;
+      pill.style.borderColor = 'rgba(229, 169, 59, 0.4)';
+      pill.style.color = '#e5a93b';
+    } else {
+      pill.innerHTML = `<span class="hours-live-dot"></span> Open Today until 2:00 AM`;
+    }
+  });
+}
+
+/* Copy Google Maps Plus Code (74PP+CM, Panchavalli, Karnataka) */
+function initPlusCodeCopy() {
+  const copyButtons = document.querySelectorAll('.plus-code-copy-btn');
+  const plusCodeText = '74PP+CM, Panchavalli, Karnataka';
+
+  copyButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(plusCodeText).then(() => {
+          showGlobalToast('Plus Code copied: 74PP+CM, Panchavalli, Karnataka');
+          btn.innerHTML = '✓ Copied to Clipboard';
+          setTimeout(() => {
+            btn.innerHTML = '📋 Copy Plus Code: 74PP+CM';
+          }, 2400);
+        }).catch(() => {
+          fallbackCopyText(plusCodeText, btn);
+        });
+      } else {
+        fallbackCopyText(plusCodeText, btn);
+      }
+    });
+  });
+
+  function fallbackCopyText(text, btn) {
+    const input = document.createElement('input');
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    input.remove();
+    showGlobalToast('Plus Code copied: 74PP+CM, Panchavalli, Karnataka');
+    btn.innerHTML = '✓ Copied to Clipboard';
+    setTimeout(() => {
+      btn.innerHTML = '📋 Copy Plus Code: 74PP+CM';
+    }, 2400);
+  }
+}
+
+/* Back to Top Smooth Button */
 function initBackToTop() {
-  const backBtn = document.getElementById('backToTopBtn');
-  if (!backBtn) return;
+  const btn = document.getElementById('backToTopBtn');
+  if (!btn) return;
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 400) {
-      backBtn.classList.add('visible');
+      btn.classList.add('visible');
     } else {
-      backBtn.classList.remove('visible');
+      btn.classList.remove('visible');
     }
   }, { passive: true });
 
-  backBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
 
-/* Plus Code Copy Utility */
-function initPlusCodeCopy() {
-  const copyBtn = document.getElementById('btnCopyPlusCode');
-  if (!copyBtn) return;
-
-  copyBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const plusCode = '85P2+2W Kampalapura, Karnataka';
-    navigator.clipboard.writeText(plusCode).then(() => {
-      if (window.puthariCart) {
-        window.puthariCart.showToast('Copied Plus Code: 85P2+2W');
-      } else {
-        alert('Copied Plus Code: ' + plusCode);
-      }
-    }).catch(() => {
-      // Fallback
-      alert('Plus Code: ' + plusCode);
-    });
-  });
-}
-
-/* Contact / Table Reservation Form */
+/* Contact / Table / Kerbside Inquiry Form */
 function initContactForm() {
-  const form = document.getElementById('puthariContactForm');
+  const form = document.getElementById('noshContactForm');
   if (!form) return;
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = {
-      name: formData.get('name'),
-      phone: formData.get('phone'),
-      guests: formData.get('guests') || '2',
-      date: formData.get('date') || 'Today',
-      time: formData.get('time') || 'Dinner',
-      message: formData.get('message') || '',
-      type: formData.get('inquiryType') || 'Reservation'
-    };
+    const name = form.querySelector('[name="name"]')?.value.trim();
+    const phone = form.querySelector('[name="phone"]')?.value.trim();
+    const serviceType = form.querySelector('[name="serviceType"]')?.value || 'Dine-in';
+    const message = form.querySelector('[name="message"]')?.value.trim();
 
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>Sending Request...</span>';
+    if (!name || name.length < 2) {
+      showGlobalToast('Please enter your name.');
+      return;
     }
 
-    try {
-      // Send to local Express backend if running
-      await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }).catch(() => {});
-    } catch (err) {}
+    if (!phone || phone.length < 10) {
+      showGlobalToast('Please enter a valid phone number.');
+      return;
+    }
 
-    setTimeout(() => {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
-      }
+    // Try posting to demo backend if active
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, serviceType, message, timestamp: new Date().toISOString() })
+    }).catch(err => console.log('Demo contact note logged:', err));
 
-      form.innerHTML = `
-        <div style="background: rgba(22,62,43,0.4); border: 1px solid var(--color-gold); border-radius: 12px; padding: 24px; text-align: center;">
-          <div style="font-size: 2.2rem; color: var(--color-gold); margin-bottom: 8px;">✓</div>
-          <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: #FFF; margin-bottom: 6px;">Thank You, ${data.name}!</h4>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 16px;">
-            Your inquiry has been received. Our Kampalapura team will confirm your table reservation via phone call or WhatsApp message.
-          </p>
-          <a href="https://wa.me/?text=${encodeURIComponent(`Hello Puthari Restaurant! I am ${data.name} and would like to reserve a table for ${data.guests} guests on ${data.date} at ${data.time}.`)}" target="_blank" class="btn btn-primary btn-sm" style="background:#25D366; color:#FFF; border:none;">
-            Confirm Instantly via WhatsApp
-          </a>
-        </div>
-      `;
-    }, 600);
+    showGlobalToast('Thank you! Your message has been received.');
+    form.reset();
   });
 }
 
-/* Gallery Lightbox */
-function initGalleryLightbox() {
-  const lightbox = document.getElementById('galleryLightbox');
-  if (!lightbox) return;
-
-  const lightboxImg = lightbox.querySelector('.lightbox-image');
-  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
-  const closeBtn = lightbox.querySelector('.lightbox-close-btn');
-
-  function openLightbox(src, caption) {
-    if (lightboxImg) lightboxImg.src = src;
-    if (lightboxCaption) lightboxCaption.textContent = caption || 'Puthari Restaurant Experience';
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
+/* Global Toast Helper */
+function showGlobalToast(message) {
+  if (window.noshCart && typeof window.noshCart.showToast === 'function') {
+    window.noshCart.showToast(message);
+    return;
   }
 
-  function closeLightbox() {
-    lightbox.classList.remove('open');
-    document.body.style.overflow = '';
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
   }
 
-  document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('img');
-      const title = item.querySelector('.gallery-item-title');
-      if (img) {
-        openLightbox(img.src, title ? title.textContent : img.alt);
-      }
-    });
-  });
+  const toast = document.createElement('div');
+  toast.className = 'toast-message';
+  toast.textContent = message;
+  container.appendChild(toast);
 
-  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('open')) {
-      closeLightbox();
-    }
-  });
-}
-
-/* Dynamic Open / Late Night Hours Indicator */
-function initHoursStatusBadge() {
-  const badge = document.getElementById('hoursLiveStatus');
-  if (!badge) return;
-
-  const now = new Date();
-  const hours = now.getHours();
-
-  // Listed as closing at 2:00 AM (Open 11:00 AM to 2:00 AM)
-  const isOpen = (hours >= 11 || hours < 2);
-
-  if (isOpen) {
-    badge.innerHTML = `<span style="color:#2ECC71;">●</span> Open Now (Closes 2:00 AM)`;
-    badge.style.color = '#E2F8EB';
-  } else {
-    badge.innerHTML = `<span style="color:#E67E22;">●</span> Opens at 11:00 AM (Closes 2:00 AM)`;
-    badge.style.color = '#FDEBD0';
-  }
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 2600);
 }

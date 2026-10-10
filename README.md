@@ -1,252 +1,157 @@
-# PUTHARI RESTAURANT — Official Website & Online Ordering
+# NOSH RESTO CAFE — Official Brand Website & Web Application
 
-> **Premium, Modern, Responsive Website for Puthari Restaurant, Kampalapura, Karnataka**
+A complete, visually stunning, fully responsive restaurant and café web application created for **NOSH RESTO CAFE**, located in **Panchavalli, Karnataka, India**.
 
----
-
-## 📌 Restaurant Overview & Verified Business Profile
-
-- **Restaurant Name:** PUTHARI RESTAURANT
-- **Category:** Family Restaurant
-- **Address:** BM Road, Kampalapura, Karnataka 571107, India
-- **Google Maps Plus Code:** `85P2+2W Kampalapura, Karnataka`
-- **Google Rating:** **3.9 / 5.0** based on **64 reviews** *(Provided business information; subject to update)*
-- **Price Range:** ₹200–₹400 per person
-- **Dining Options:** Dine-in, Drive-through, and No-contact delivery
-- **Popular Food Highlights:** Biriyani, Egg Chilli, Chicken Specials, and Karnataka Highway Classics
-- **Operating Hours:** Daily 11:00 AM – 2:00 AM *(Closing listed at 2:00 AM; verify opening hours before publishing)*
+Designed with a modern café aesthetic, deep espresso and dark charcoal backdrop, warm cream typography, and terracotta, caramel, and muted gold accents.
 
 ---
 
-## 🎨 Design System & Brand Identity
+## 📍 1. Verified Business Information
 
-- **Color Palette:**
-  - **Charcoal / Dark Surface:** `#0A0E0C`, `#121915`, `#18221D`
-  - **Warm Cream Accents:** `#FAF7F0`, `#F5EFEB`, `#E8DEC8`
-  - **Deep Forest Green:** `#0D2619`, `#17422C`, `#245F40`
-  - **Royal Gold Highlights & CTAs:** `#D4AF37`, `#F5E29E`, `#A67D1E`
+| Detail | Information |
+| :--- | :--- |
+| **Restaurant Name** | **Nosh Resto Cafe** |
+| **Category** | Restaurant and café |
+| **Address** | Panchavalli, Gonikoppa, Thalassery–Mysore Road, Panchavalli, Karnataka 571105, India |
+| **Phone Number** | **+91 98953 86886** |
+| **Google Maps Plus Code** | **74PP+CM, Panchavalli, Karnataka** |
+| **Google Rating** | **4.7 / 5.0** (based on 34 verified reviews) |
+| **Price Range** | **₹200 – ₹400** per person |
+| **Available Services** | Dine-in, Kerbside pickup, No-contact delivery |
+| **Listed Closing Time** | **2:00 AM** *(Verify complete operating hours before publishing)* |
+
+### Verified Customer Feedback Themes:
+- Delicious and freshly prepared food.
+- Good food variety across categories.
+- Fast and attentive service.
+- Positive overall dining experiences.
+- *Late-Night Advisory:* Customer feedback indicates that food selections late at night may vary depending on daily prep.
+
+---
+
+## 🎨 2. Premium Brand Identity & Design System
+
+- **Background Palette:** Deep Espresso & Charcoal (`#0e0d0c`, `#161412`, `#1e1b18`, `#221e1a`).
 - **Typography:**
-  - Headings: `Cinzel` & `Playfair Display` (Classic Indian heritage & luxury dining feel)
-  - Body & UI: `Plus Jakarta Sans` (Clean, legible, modern mobile readability)
-- **Visuals & Assets:**
-  - Custom SVG Royal Crest Logo (`assets/images/logo.svg`)
-  - Matching Favicon (`assets/images/favicon.svg`)
-  - Curated high-resolution food photography (Claypot Dum Biriyani, Wok Egg Chilli, Chicken 65, Nati Curry, Paneer Butter Masala)
-  - Clear, honest illustrative photography and sample price notices as requested
+  - Headings: Serif elegance (`Playfair Display`, Georgia).
+  - Body & UI: Clean, legible sans-serif (`Plus Jakarta Sans`).
+  - Text Colors: Warm Cream (`#f5efe6`), Ivory (`#fffdfa`), and subtle sand tones (`#d8cdbe`).
+- **Accent Colors:**
+  - Terracotta: `#d96b43` / `#e8825c` / `#b85028`
+  - Caramel: `#c68b59` / `#dc9f6e`
+  - Muted Gold: `#c5a059` / `#dfbd73`
+- **Logo:** Bespoke SVG crest emblem featuring modern café aroma & cloche motif with letterspaced serif wordmark (`assets/images/logo.svg`).
+- **Icons & Badges:** Standard Indian green dot veg / red non-veg indicators, live pulsing status pill for business hours, star ratings, and verified badges.
 
 ---
 
-## 🗂️ Project Structure
+## 🍲 3. Interactive Food Menu
 
-```text
-puthari-restaurant/
-├── index.html                   # Homepage (Hero, Specialties, About teaser, Reviews teaser, Location, Plus Code)
-├── menu.html                    # Dedicated Food Menu with Search, Category tabs, Dietary toggle & Sorting
-├── about.html                   # About Us narrative, 4 Pillars of Hospitality, Roadside location & FAQ
-├── gallery.html                 # Photo Gallery with Category filters and Lightbox viewer
-├── reviews.html                 # Customer Reviews breakdown (3.9★), Theme highlights & Balanced feedback
-├── contact.html                 # "Visit Puthari Restaurant" with Google Maps embed, Plus Code & Booking form
-├── css/
-│   ├── style.css                # Core design system, luxury variables, cart drawer, modals, animations
-│   └── responsive.css           # Breakpoints (desktop, tablet, mobile, small screens)
-├── js/
-│   ├── menu-data.js             # Menu database (25+ items, categories, prices, spice levels, veg/non-veg tags)
-│   ├── menu.js                  # Dynamic menu rendering, instant search, filters, quantity controllers
-│   ├── cart.js                  # Shopping cart engine (localStorage, calculations, checkout modal & WhatsApp order builder)
-│   ├── gallery.js               # Photo gallery category switcher and animations
-│   └── main.js                  # Sticky header, mobile nav drawer, Plus Code copy, lightbox, reservation form
+Organized into 8 distinct categories as requested:
+1. **Popular Favourites** (Nosh Special Chicken Dum Biriyani, Dragon Chicken, Paneer Butter Masala, Malabar Parotta Combo, Cold Coffee Blend)
+2. **Starters** (Pepper Chicken Dry, Chicken Lollipop, Chilli Gobi, Mushroom Pepper Fry, Chicken 65)
+3. **Chicken Specials** (Nosh Highway Chicken Roast, Butter Chicken, Kadai Chicken, Chettinad Masala)
+4. **Biriyani and Rice** (Thalassery Chicken Biriyani, Malabar Ghee Rice, Egg Dum Biriyani, Royal Veg Biriyani, Jeera Rice)
+5. **Indian Main Course** (Dal Makhani, Kadai Paneer, Egg Masala, Malabar Parotta, Garlic Naan)
+6. **Vegetarian Dishes** (Tandoori Paneer Tikka, Mushroom Masala, Veg Fried Rice with Manchurian, Aloo Gobi)
+7. **Snacks** (Grilled Chicken Club Sandwich, Paneer Tikka Sandwich, Peri-Peri Fries, Chicken Cheese Burger)
+8. **Beverages and Desserts** (Nosh Special Cold Coffee with Ice Cream, Fresh Mint Lime Mojito, Traditional Filter Coffee, Gulab Jamun, Hot Chocolate Brownie)
+
+### Interactive Features:
+- Real-time live search by dish name, description, and keywords.
+- Dietary toggles: All, Vegetarian (`🟢`), Non-Vegetarian (`🔴`).
+- Sort by: Recommended, Price Low to High, Price High to Low, Top Rated.
+- Dish Quick View Modal: Inspect preparation time, portion sizes, spice levels, and descriptions.
+- Quantity Stepper: Increment and decrement dishes directly from the card.
+- *Sample Menu Notice:* Prominently displays clear notice that sample dishes and placeholder prices are used until the official menu card is supplied.
+
+---
+
+## 🛒 4. Online Ordering & Checkout Experience
+
+- **Persistent Shopping Cart Drawer:** Accessible via header, floating button, or mobile bottom bar.
+- **Order Type Selector:**
+  - **Dine-in:** Service fee ₹0.
+  - **Kerbside Pickup:** Minimal eco-packaging fee (₹15).
+  - **No-Contact Delivery:** Flat delivery fee (₹40) with dynamic required address field.
+- **Client Validation:** Full name (min. 2 characters), 10-digit Indian mobile number validation (`/^[6-9]\d{9}$/`), and landmark address for delivery.
+- **Demo Checkout Flow:**
+  - Transparent demo mode disclaimer informing customers that orders are simulated.
+  - Generates unique Order ID (`#NOSH-XXXXXX`).
+  - Displays preparation timer estimate and itemized receipt breakdown.
+- **WhatsApp Order Builder:**
+  - Formats order items, quantities, subtotal, customer details, and special instructions into a clean message.
+  - Interactive "Review WhatsApp Message" preview modal before launching WhatsApp to verified phone number **+91 98953 86886**.
+
+---
+
+## 📸 5. Food & Ambience Photo Gallery
+
+- Filterable tabs: All Photos, Food & Biriyani, Café Ambience, Beverages & Coffee, Starters & Snacks.
+- High-resolution, warm food photography.
+- Interactive Lightbox modal with keyboard `Esc` closing and caption viewer.
+
+---
+
+## 📱 6. Responsive Mobile Experience
+
+- Dedicated sticky mobile navigation bar at the bottom with quick access to **Home**, **Menu**, **Call (+91 98953 86886)**, **WhatsApp**, and **Cart**.
+- Touch-friendly hamburger drawer navigation.
+- Smooth horizontal category filter pills.
+- One-click copy for Google Maps Plus Code (`74PP+CM, Panchavalli, Karnataka`).
+
+---
+
+## 🚀 7. Running the Application Locally
+
+### Prerequisites
+- Node.js (v18+)
+
+### Installation & Launch
+```bash
+# Navigate to directory
+cd c:\antigravity
+
+# Install dependencies (Express is already included)
+npm install
+
+# Start the server
+npm start
+```
+
+Open your browser at:
+```
+http://localhost:3000
+```
+
+---
+
+## 📂 8. Project Structure
+
+```
 ├── assets/
 │   └── images/
-│       ├── logo.svg             # Luxury vector logo
-│       └── favicon.svg          # Matching favicon
-├── server.js                    # Node.js Express server + native HTTP fallback with REST API
-├── package.json                 # Project dependencies & scripts
-├── .env.example                 # Environment variables template
-├── .gitignore                   # Ignored files (node_modules, logs, .env)
-└── README.md                    # Documentation, setup guide, deployment & testing checklist
+│       ├── logo.svg              # Custom Nosh Resto Cafe vector brandmark
+│       └── favicon.svg           # High-resolution favicon
+├── css/
+│   ├── style.css                 # Core design system, espresso palette & animations
+│   └── responsive.css            # Tablet and mobile viewport optimizations
+├── js/
+│   ├── menu-data.js              # Sample menu dataset (8 categories, 30+ dishes)
+│   ├── cart.js                   # Cart engine, validation, WhatsApp builder & demo checkout
+│   ├── menu.js                   # Menu filtering, live search, sort & quick view modal
+│   ├── gallery.js                # Gallery filter tabs & lightbox viewer
+│   └── main.js                   # Sticky header, hours status pill & clipboard helper
+├── index.html                    # Main flagship landing experience
+├── menu.html                     # Dedicated interactive menu page
+├── about.html                    # Dedicated brand story & location page
+├── gallery.html                  # Dedicated photo gallery page
+├── reviews.html                  # Dedicated Google reviews & rating page
+├── contact.html                  # Dedicated contact, plus code & inquiry page
+├── server.js                     # Express API and static server (native HTTP fallback)
+└── package.json                  # Project metadata and start scripts
 ```
 
 ---
 
-## ⚡ Getting Started (Local Setup)
-
-### Option A: Run with Node.js & Express (Recommended)
-
-1. **Clone or open the project folder:**
-   ```bash
-   cd c:\antigravity
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the server:**
-   ```bash
-   npm start
-   ```
-
-4. **Open in browser:**
-   ```text
-   http://localhost:3000
-   ```
-
-### Option B: Run as Pure Static Website (No Node.js needed!)
-
-This website is completely self-contained with Vanilla HTML5, CSS3, and ES6 JavaScript. You can simply double-click `index.html` or serve it via any static server:
-- Python: `python -m http.server 8000`
-- VS Code Live Server extension
-- Directly open `index.html` in Chrome, Safari, Edge, or Firefox!
-
----
-
-## 🛒 Features & Ordering Experience
-
-1. **Persistent Cart Drawer across all pages:**
-   - Saved automatically in `localStorage`.
-   - Add/remove items, adjust quantities with instant updates on cards and inside the drawer.
-   - Calculates Subtotal, Packaging/Delivery fee (₹30 for takeaway/delivery, ₹0 for dine-in), and Grand Total.
-2. **Multi-Mode Ordering:**
-   - **Dine-In:** Specify table number.
-   - **Takeaway:** Quick drive-through pickup with vehicle number.
-   - **Delivery:** No-contact local delivery in Kampalapura.
-3. **Safe Demo Mode & Instant WhatsApp Order Generator:**
-   - In accordance with business rules, orders do not claim to charge cards without an active payment gateway.
-   - Instead, the checkout generates a digital order slip with an instant **"Send Order to Restaurant WhatsApp"** button (`https://wa.me/?text=...`) pre-formatted with item details, customer name, phone, and total!
-4. **Live Menu Filtering:**
-   - Category tabs: All, Biriyani, Starters, Chicken Specials, Egg Dishes, Vegetarian Dishes, Rice & Noodles, Beverages.
-   - Dietary toggle: All / Pure Veg / Non-Veg.
-   - Instant search bar by dish name or ingredient.
-   - Price & rating sorting.
-5. **Verified Location & Google Plus Code:**
-   - One-click copy for Plus Code: `85P2+2W Kampalapura, Karnataka`.
-   - Responsive embedded Google Map.
-   - Direct button to launch Google Maps driving navigation.
-6. **Customer Reviews & Balanced Feedback:**
-   - Displays provided 3.9/5 rating across 64 reviews.
-   - Transparently acknowledges positive themes (fresh biriyani, crispy egg chilli, spacious highway parking) alongside customer feedback on peak-hour service speed.
-
----
-
-## 🔌 REST API Endpoints (`server.js`)
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/info` | Returns verified restaurant metadata, address, Plus Code, and timings |
-| `GET` | `/api/menu` | Returns menu items with query filters (`?category=...&isVeg=...&q=...`) |
-| `POST` | `/api/orders` | Records incoming order requests (in demo mode) |
-| `GET` | `/api/orders` | Returns recent demo orders for restaurant kitchen display |
-| `POST` | `/api/contact` | Receives table reservations and guest inquiries |
-| `GET` | `/api/health` | Health check endpoint |
-
----
-
-## 🗄️ Optional Database Setup (MySQL Integration)
-
-If you wish to store menu items and orders in a persistent MySQL database instead of the default fast in-memory/JSON store, run the following SQL schema:
-
-```sql
-CREATE DATABASE IF NOT EXISTS puthari_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE puthari_db;
-
--- Restaurant Menu Table
-CREATE TABLE IF NOT EXISTS menu_items (
-  id VARCHAR(32) PRIMARY KEY,
-  name VARCHAR(128) NOT NULL,
-  category VARCHAR(64) NOT NULL,
-  category_name VARCHAR(64) NOT NULL,
-  is_veg BOOLEAN NOT NULL DEFAULT FALSE,
-  price DECIMAL(8,2) NOT NULL,
-  rating DECIMAL(2,1) DEFAULT 4.5,
-  reviews_count INT DEFAULT 20,
-  spice_level INT DEFAULT 1,
-  badge VARCHAR(64),
-  description TEXT,
-  image_url VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Customer Orders Table
-CREATE TABLE IF NOT EXISTS orders (
-  order_id VARCHAR(32) PRIMARY KEY,
-  customer_name VARCHAR(128) NOT NULL,
-  customer_phone VARCHAR(20) NOT NULL,
-  order_type ENUM('dinein', 'takeaway', 'delivery') NOT NULL,
-  location_detail VARCHAR(255),
-  notes TEXT,
-  subtotal DECIMAL(10,2) NOT NULL,
-  fee DECIMAL(10,2) DEFAULT 0,
-  grand_total DECIMAL(10,2) NOT NULL,
-  status VARCHAR(32) DEFAULT 'pending',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Order Items Table
-CREATE TABLE IF NOT EXISTS order_items (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  order_id VARCHAR(32) NOT NULL,
-  item_id VARCHAR(32) NOT NULL,
-  item_name VARCHAR(128) NOT NULL,
-  unit_price DECIMAL(8,2) NOT NULL,
-  quantity INT NOT NULL,
-  FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
-);
-
--- Table Reservations & Inquiries
-CREATE TABLE IF NOT EXISTS reservations (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  guest_name VARCHAR(128) NOT NULL,
-  phone VARCHAR(20) NOT NULL,
-  guests_count VARCHAR(32),
-  reservation_date DATE,
-  reservation_time VARCHAR(64),
-  message TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-To connect MySQL:
-1. Copy `.env.example` to `.env`.
-2. Install `mysql2`: `npm install mysql2`.
-3. Set `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` in `.env`.
-
----
-
-## 🚀 Deployment Instructions
-
-### 1. Static Hosting (Vercel, Netlify, GitHub Pages)
-Since all HTML/CSS/JS files are fully functional as client-side modules:
-- **Netlify / Vercel:** Simply drag and drop the folder or push to GitHub and import the repository. No build step is required (leave build command blank and publish directory as `/`).
-- **GitHub Pages:**
-  1. Push code to a GitHub repository:
-     ```bash
-     git init
-     git add .
-     git commit -m "Initial release of Puthari Restaurant website"
-     git branch -M main
-     git remote add origin https://github.com/your-username/puthari-restaurant.git
-     git push -u origin main
-     ```
-  2. Go to **Repository Settings** > **Pages** > Select branch `main` and root `/` > Click **Save**.
-
-### 2. Node.js Hosting (Render, Railway, DigitalOcean, AWS EC2)
-- Set Environment Variable: `PORT=3000`
-- Start Command: `npm start`
-- Ready to serve traffic on your custom domain (e.g., `putharirestaurant.com`).
-
----
-
-## 📋 Comprehensive Testing Checklist
-
-- [x] **Responsive Mobile & Tablet Layout:** Tested on screen widths from 360px (mobile) to 1440px (desktop). Hamburger navigation drawer opens and closes smoothly.
-- [x] **Brand Styling & Palette:** Dark charcoal, deep forest green, warm cream, and royal gold accents applied consistently across all 6 pages.
-- [x] **Hero Section Accuracy:** Displays "Great Taste. Warm Hospitality. Memorable Moments.", Google Rating 3.9/5 from 64 reviews labeled as provided business information, BM Road location, and closing at 2:00 AM.
-- [x] **Menu Filtering & Search:** Category filters (Biriyani, Starters, Chicken Specials, Egg Dishes, Veg, Rice/Noodles, Beverages), Pure Veg / Non-Veg toggles, and live text search work instantly.
-- [x] **Online Ordering & Cart Drawer:** Items can be added, quantities incremented/decremented, items removed. Calculations for subtotal, packaging, and grand total operate correctly.
-- [x] **Demo Mode Compliance:** Clear demo notices on cart, modal, and receipts. Generates pre-filled WhatsApp order summary link.
-- [x] **Photo Gallery & Lightbox:** Click-to-zoom works with captions and Escape key close. Illustrative photo disclaimer displayed.
-- [x] **Reviews & Balanced Feedback:** Verified breakdown of 3.9★ based on 64 reviews with honest mention of peak rush times and link to Google Maps.
-- [x] **Location, Hours & Plus Code:** `85P2+2W Kampalapura, Karnataka` copy button works with toast confirmation. Embedded Google Maps loads properly.
-- [x] **SEO & Accessibility:** ARIA labels, semantic tags, Open Graph meta tags, and Schema.org Restaurant JSON-LD structured data included.
-- [x] **No Broken Links & No Console Errors:** All navigation links, asset paths, and fallback images verified.
+© 2026 Nosh Resto Cafe. Panchavalli, Gonikoppa, Thalassery–Mysore Road, Karnataka 571105.

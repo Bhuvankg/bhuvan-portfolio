@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — GradeAI Auto-Grader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Lucide Icons & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-header">
+        <a href="/index.html" class="brand-logo" style="font-size: 1.2rem;">
+          <div class="brand-icon" style="width: 32px; height: 32px;">
+            <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          </div>
+          <span>Grade<strong style="color: var(--primary);">AI</strong></span>
+        </a>
+      </div>
+
+      <div class="sidebar-nav">
+        <!-- TEACHER SECTION -->
+        <div id="sidebar-teacher-section" style="display: none;">
+          <div class="nav-section-title">Instructor Portal</div>
+          <a class="sidebar-item active" data-view="teacher-overview" onclick="App.navigate('teacher-overview')">
+            <i data-lucide="layout-dashboard"></i> Overview
+          </a>
+          <a class="sidebar-item" data-view="teacher-assignments" onclick="App.navigate('teacher-assignments')">
+            <i data-lucide="file-text"></i> Assignments
+          </a>
+          <a class="sidebar-item" data-view="teacher-plagiarism" onclick="App.navigate('teacher-plagiarism')">
+            <i data-lucide="shield-alert"></i> Plagiarism Center
+          </a>
+          <a class="sidebar-item" data-view="teacher-analytics" onclick="App.navigate('teacher-analytics')">
+            <i data-lucide="bar-chart-2"></i> Analytics & Gradebook
+          </a>
+          <a class="sidebar-item" data-view="teacher-classes" onclick="App.navigate('teacher-classes')">
+            <i data-lucide="users"></i> My Classes
+          </a>
+        </div>
+
+        <!-- STUDENT SECTION -->
+        <div id="sidebar-student-section" style="display: none;">
+          <div class="nav-section-title">Student Portal</div>
+          <a class="sidebar-item active" data-view="student-overview" onclick="App.navigate('student-overview')">
+            <i data-lucide="layout-dashboard"></i> Overview
+          </a>
+          <a class="sidebar-item" data-view="student-assignments" onclick="App.navigate('student-assignments')">
+            <i data-lucide="edit-3"></i> Available Assignments
+          </a>
+          <a class="sidebar-item" data-view="student-grades" onclick="App.navigate('student-grades')">
+            <i data-lucide="award"></i> My Grades & Feedback
+          </a>
+        </div>
+
+        <!-- ADMIN SECTION -->
+        <div id="sidebar-admin-section" style="display: none;">
+          <div class="nav-section-title">Administration</div>
+          <a class="sidebar-item active" data-view="admin-overview" onclick="App.navigate('admin-overview')">
+            <i data-lucide="activity"></i> System Overview
+          </a>
+          <a class="sidebar-item" data-view="admin-users" onclick="App.navigate('admin-users')">
+            <i data-lucide="user-cog"></i> User Management
+          </a>
+          <a class="sidebar-item" data-view="admin-courses" onclick="App.navigate('admin-courses')">
+            <i data-lucide="folder"></i> Course Management
+          </a>
+          <a class="sidebar-item" data-view="admin-audit" onclick="App.navigate('admin-audit')">
+            <i data-lucide="shield"></i> Security Audit Logs
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-quick-profile">
+          <div class="avatar-circle" id="topbar-user-avatar">US</div>
+          <div class="user-profile-info">
+            <div class="user-profile-name" id="topbar-user-name">User</div>
+            <div class="user-profile-role" id="topbar-user-role">Role</div>
+          </div>
+          <button style="background: none; border: none; color: var(--text-muted); cursor: pointer;" title="Sign Out" onclick="Auth.logout()">
+            <i data-lucide="log-out"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- APP MAIN CONTENT AREA -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn btn-outline btn-sm" style="display: none;" id="mobile-sidebar-toggle" onclick="document.getElementById('app-sidebar').classList.toggle('mobile-open')">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="topbar-title">GradeAI Intelligent Studio</div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Fast Demo Switcher Pill -->
+          <div class="role-switcher-dropdown">
+            <i data-lucide="refresh-cw" style="width: 14px; height: 14px; color: var(--primary);"></i>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">ROLE:</span>
+            <select id="role-switcher-select" class="role-select-box" onchange="Auth.switchRole(this.value)">
+              <option value="teacher">Teacher (Dr. Chen)</option>
+              <option value="student1">Student (Alex Rivera)</option>
+              <option value="student2">Student (Brenda Vance)</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+            <i data-lucide="sun"></i>
+          </button>
+
+          <!-- Back to Landing Link -->
+          <a href="/index.html" class="btn btn-secondary btn-sm" title="Homepage">
+            <i data-lucide="home"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- DYNAMIC CONTENT VIEW CONTAINER -->
+      <section class="app-body" id="app-body-container">
+        <!-- Rendered by App.navigate -->
+      </section>
+    </main>
+  </div>
+
+  <div id="global-toast-container" class="toast-container"></div>
+  <div id="global-modal-overlay" class="modal-overlay"></div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/teacherDashboard.js"></script>
+  <script src="/js/studentDashboard.js"></script>
+  <script src="/js/adminDashboard.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      App.initDashboard();
+    });
+  </script>
+</body>
+</html>

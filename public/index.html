@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GradeAI — Intelligent Assignment Auto-Grader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Lucide Icons & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="bg-glow-top"></div>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="landing-nav">
+    <a href="/index.html" class="brand-logo">
+      <div class="brand-icon">
+        <i data-lucide="sparkles"></i>
+      </div>
+      <span>Grade<strong style="color: var(--primary);">AI</strong></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#features" class="nav-link">Features</a></li>
+      <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+      <li><a href="#simulator" class="nav-link">AI Simulator</a></li>
+      <li><a href="#benefits" class="nav-link">Benefits</a></li>
+      <li><a href="#pricing" class="nav-link">Pricing</a></li>
+      <li><a href="#faq" class="nav-link">FAQ</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <i data-lucide="sun"></i>
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="openLoginModal()">Sign In</button>
+      <button class="btn btn-primary btn-sm" onclick="openDemoDrawer()">
+        <i data-lucide="play"></i> 1-Click Demo
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero-section">
+    <div class="hero-pill">
+      <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+      Next-Generation AI Grading & Academic Integrity Engine
+    </div>
+    <h1 class="hero-headline">
+      Grade Smarter.<br>
+      <span class="gradient-text">Teach Better.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Automate assignment grading, detect plagiarism, and deliver personalized feedback with AI — empowering educators to reclaim 70% of grading time while maintaining rigorous academic standards.
+    </p>
+
+    <div class="hero-cta-group">
+      <button class="btn btn-primary btn-lg" onclick="openDemoDrawer()">
+        <i data-lucide="zap"></i> Start Grading Free
+      </button>
+      <button class="btn btn-secondary btn-lg" onclick="demoDirectLogin('teacher')">
+        <i data-lucide="layout-dashboard"></i> Explore Dashboard
+      </button>
+    </div>
+
+    <!-- Quick Role Access Pills -->
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 50px; flex-wrap: wrap;">
+      <span style="font-size: 0.85rem; color: var(--text-muted);">Quick Demo Login:</span>
+      <button class="btn btn-outline btn-sm" onclick="demoDirectLogin('teacher')">
+        <i data-lucide="user-check"></i> Teacher (Dr. Robert Chen)
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="demoDirectLogin('student1')">
+        <i data-lucide="graduation-cap"></i> Student (Alex Rivera)
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="demoDirectLogin('admin')">
+        <i data-lucide="shield"></i> Administrator
+      </button>
+    </div>
+
+    <!-- DASHBOARD PREVIEW WIDGET -->
+    <div class="demo-preview-wrapper">
+      <div class="demo-preview-inner">
+        <div class="demo-header-bar">
+          <div class="demo-title-group">
+            <div class="demo-dots">
+              <span class="demo-dot dot-red"></span>
+              <span class="demo-dot dot-yellow"></span>
+              <span class="demo-dot dot-green"></span>
+            </div>
+            <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted); margin-left: 8px;">
+              CS101 • Midterm Examination Grading Queue
+            </span>
+          </div>
+          <div>
+            <span class="badge badge-success"><i data-lucide="check"></i> AI Grading Live</span>
+          </div>
+        </div>
+
+        <!-- Mini Preview Cards Inside Preview Box -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+          <div class="card" style="padding: 16px; background: var(--bg-surface);">
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Pending Review</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--warning);">1 Submission</div>
+          </div>
+          <div class="card" style="padding: 16px; background: var(--bg-surface);">
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Average Class Score</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--success);">79.4%</div>
+          </div>
+          <div class="card" style="padding: 16px; background: var(--bg-surface);">
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Plagiarism Flags</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--danger);">1 Pair Flagged</div>
+          </div>
+        </div>
+
+        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; background: var(--bg-surface);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <strong>Student: Alex Rivera (CS101)</strong>
+            <span class="badge badge-success">Approved Grade: 94% (Grade A)</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 8px;">
+            "Divide and Conquer breaks problems into independent subproblems. Dynamic Programming solves overlapping subproblems with memoization and optimal substructure."
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="concept-tag concept-matched">✓ Overlapping Subproblems</span>
+            <span class="concept-tag concept-matched">✓ Memoization Table</span>
+            <span class="concept-tag concept-matched">✓ Optimal Substructure</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES SECTION -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <span class="badge badge-primary" style="margin-bottom: 12px;">Next-Gen Capabilities</span>
+      <h2>Designed for Academic Rigor & Modern Pedagogy</h2>
+      <p>A comprehensive auto-grading suite purpose-built for university faculty, departmental deans, and students.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="card">
+        <div class="feature-icon-box">
+          <i data-lucide="check-circle-2"></i>
+        </div>
+        <h3>Instant MCQ Auto-Scoring</h3>
+        <p>Evaluates multiple-choice questions instantly against answer keys. Generates question difficulty statistics and misdirection analyses.</p>
+      </div>
+
+      <div class="card">
+        <div class="feature-icon-box" style="background: rgba(139, 92, 246, 0.15); color: var(--accent-purple);">
+          <i data-lucide="brain"></i>
+        </div>
+        <h3>AI Semantic Short-Answer Grading</h3>
+        <p>Understands meaning, conceptual reasoning, and nuance rather than rigid keyword matching. Generates confidence scores and partial-credit breakdowns.</p>
+      </div>
+
+      <div class="card">
+        <div class="feature-icon-box" style="background: rgba(239, 68, 68, 0.15); color: var(--danger);">
+          <i data-lucide="shield-alert"></i>
+        </div>
+        <h3>Cross-Submission Plagiarism Scan</h3>
+        <p>3-word n-gram shingle indexing and Jaccard comparison across all student cohorts and reference solutions with visual side-by-side diffs.</p>
+      </div>
+
+      <div class="card">
+        <div class="feature-icon-box" style="background: rgba(16, 185, 129, 0.15); color: var(--success);">
+          <i data-lucide="message-square"></i>
+        </div>
+        <h3>Personalized Student Feedback</h3>
+        <p>Constructive feedback identifies what concepts students mastered and highlights exact technical gaps with actionable improvement tips.</p>
+      </div>
+
+      <div class="card">
+        <div class="feature-icon-box" style="background: rgba(14, 165, 233, 0.15); color: var(--info);">
+          <i data-lucide="sliders"></i>
+        </div>
+        <h3>Teacher-in-the-Loop Review</h3>
+        <p>Instructors maintain full control. AI-suggested marks remain recommendations until verified, modified, and approved by the educator.</p>
+      </div>
+
+      <div class="card">
+        <div class="feature-icon-box" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);">
+          <i data-lucide="bar-chart-2"></i>
+        </div>
+        <h3>Deep Cohort Analytics & Reports</h3>
+        <p>Class score distribution curves, most frequently missed concepts, question difficulty indices, and 1-click CSV gradebook export.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE AI GRADER SIMULATOR -->
+  <section id="simulator" style="padding: 100px 40px; background: rgba(15, 23, 42, 0.5); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div style="max-width: 960px; margin: 0 auto;">
+      <div class="section-header">
+        <span class="badge badge-primary" style="margin-bottom: 12px;">Interactive Demonstration</span>
+        <h2>Test the AI Evaluation Engine Live</h2>
+        <p>Type an answer below or select a sample response to observe semantic evaluation, concept extraction, and constructive suggestions in real-time.</p>
+      </div>
+
+      <div class="card" style="padding: 32px;">
+        <div style="background: var(--bg-surface); padding: 18px; border-radius: var(--radius-md); margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="badge badge-info">Sample Question (30 Marks)</span>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Topic: Algorithm Analysis</span>
+          </div>
+          <h4 style="font-size: 1.1rem;">"Explain the difference between Dynamic Programming and Divide-and-Conquer. When should Dynamic Programming be preferred?"</h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 6px;">
+            Key Rubric Concepts: Overlapping Subproblems, Optimal Substructure, Memoization, Tabulation, Independent Subproblems.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+          <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center;">Try Preset Responses:</span>
+          <button class="btn btn-secondary btn-sm" onclick="LandingSimulator.setAnswer('perfect')">
+            <i data-lucide="check"></i> Perfect Response
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="LandingSimulator.setAnswer('partial')">
+            <i data-lucide="minus"></i> Partial Response
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="LandingSimulator.setAnswer('flawed')">
+            <i data-lucide="x"></i> Flawed Response
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Type or edit response:</label>
+          <textarea id="simulator-answer-input" class="form-textarea" rows="4" placeholder="Enter an explanation to test semantic analysis..." oninput="LandingSimulator.runSimulation()">Dynamic Programming breaks an optimization problem into overlapping subproblems with optimal substructure. It avoids repetitive computations by caching computed answers using memoization or bottom-up tabulation.</textarea>
+        </div>
+
+        <div id="simulator-result-box" style="margin-top: 20px;">
+          <!-- Populated by LandingSimulator -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS SECTION -->
+  <section class="steps-section" id="how-it-works">
+    <div class="section-header">
+      <span class="badge badge-primary" style="margin-bottom: 12px;">Streamlined Workflow</span>
+      <h2>Three Simple Steps to Effortless Grading</h2>
+      <p>Seamlessly transitions from assignment distribution to approved, published student grade cards.</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step-card">
+        <span class="step-number">01</span>
+        <div class="feature-icon-box"><i data-lucide="file-plus"></i></div>
+        <h3>Create & Publish</h3>
+        <p>Design assignments with MCQs and Short Answers. Configure reference answers, mandatory concepts, and rubric criteria weights.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-number">02</span>
+        <div class="feature-icon-box" style="background: rgba(139, 92, 246, 0.15); color: var(--accent-purple);"><i data-lucide="cpu"></i></div>
+        <h3>AI Analyzes & Flags</h3>
+        <p>As students submit, MCQs grade instantly, short answers receive semantic scores with concept highlights, and cross-peer plagiarism scans run automatically.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-number">03</span>
+        <div class="feature-icon-box" style="background: rgba(16, 185, 129, 0.15); color: var(--success);"><i data-lucide="check-check"></i></div>
+        <h3>Review & Publish</h3>
+        <p>Instructors inspect recommendations, adjust points with 1 click, add feedback, and publish personalized reports to student portals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section class="benefits-section" id="benefits">
+    <div class="section-header">
+      <span class="badge badge-primary" style="margin-bottom: 12px;">Institutional Impact</span>
+      <h2>Measurable Advantages for Educators & Universities</h2>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit-item">
+        <div class="benefit-check"><i data-lucide="check"></i></div>
+        <div>
+          <h4>70% Reduction in Grading Time</h4>
+          <p>Reclaim countless weekend hours spent on repetitive marking. Let AI handle initial grading passes so you can focus on mentorship.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-check"><i data-lucide="check"></i></div>
+        <div>
+          <h4>Consistent, Objective Rubrics</h4>
+          <p>Eliminate grading fatigue and inconsistencies across multi-section courses by applying standardized semantic criteria.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-check"><i data-lucide="check"></i></div>
+        <div>
+          <h4>Rapid Student Feedback Turnaround</h4>
+          <p>Deliver in-depth evaluations within hours rather than weeks, accelerating the student learning curve while material is still fresh.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-check"><i data-lucide="check"></i></div>
+        <div>
+          <h4>Safeguard Academic Integrity</h4>
+          <p>Identify unauthorized collaboration and copy-paste submissions with transparent n-gram shingling and highlighted diffs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS (SAMPLE CASE STUDIES) -->
+  <section style="padding: 100px 40px; max-width: 1280px; margin: 0 auto;">
+    <div class="section-header">
+      <span class="badge badge-info" style="margin-bottom: 12px;">Sample Institutional Case Studies</span>
+      <h2>What Academic Leaders Experience</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">Identified sample simulation profiles illustrating typical university faculty deployments.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+      <div class="card">
+        <div style="display: flex; gap: 4px; color: var(--warning); margin-bottom: 14px;">
+          <i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i>
+        </div>
+        <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+          "Grading 350 midterm short-answers used to take an entire week. With GradeAI, the semantic concept matching cuts my review cycle to a single afternoon while students get far richer feedback."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="avatar-circle">RC</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.92rem;">Dr. Robert Chen</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Professor of Computer Science & AI</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; gap: 4px; color: var(--warning); margin-bottom: 14px;">
+          <i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i>
+        </div>
+        <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+          "The cross-submission plagiarism detector caught subtle phrasing overlaps between peer submissions that would have escaped human eye during late-night grading sessions."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="avatar-circle" style="background: linear-gradient(135deg, #10b981, #06b6d4);">SJ</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.92rem;">Prof. Sarah Jenkins</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Faculty Chair, Software Engineering</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; gap: 4px; color: var(--warning); margin-bottom: 14px;">
+          <i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i><i data-lucide="star" style="width: 16px;"></i>
+        </div>
+        <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+          "The question difficulty analysis revealed that 65% of students missed optimal substructure. We addressed it immediately in the next lecture rather than discovering it at the final exam."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="avatar-circle" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">KH</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.92rem;">Dr. Katherine Hayes</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Dean of Academic Computing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING TIERS -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-header">
+      <span class="badge badge-primary" style="margin-bottom: 12px;">Flexible Plans</span>
+      <h2>Transparent Institutional Pricing</h2>
+      <p>Scale from individual classrooms to entire university campuses.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Free Educator</h3>
+        <p style="font-size: 0.88rem;">For individual professors testing auto-grading</p>
+        <div class="pricing-price">$0<span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">/month</span></div>
+        <ul class="pricing-features">
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Up to 50 student submissions/mo</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Automated MCQ grading</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> AI Short-Answer Evaluator</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Basic plagiarism comparison</li>
+        </ul>
+        <button class="btn btn-secondary" style="width: 100%;" onclick="openDemoDrawer()">Get Started</button>
+      </div>
+
+      <div class="pricing-card featured">
+        <h3>Pro Faculty</h3>
+        <p style="font-size: 0.88rem;">For university professors teaching active courses</p>
+        <div class="pricing-price">$29<span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">/month</span></div>
+        <ul class="pricing-features">
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Unlimited assignment submissions</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Full AI semantic evaluation & rubrics</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Cohort-wide plagiarism shingle scanning</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Exportable CSV gradebooks & PDF reports</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Priority AI API throughput</li>
+        </ul>
+        <button class="btn btn-primary" style="width: 100%;" onclick="openDemoDrawer()">Start 14-Day Free Trial</button>
+      </div>
+
+      <div class="pricing-card">
+        <h3>Campus / Enterprise</h3>
+        <p style="font-size: 0.88rem;">For universities, colleges, and multi-department institutions</p>
+        <div class="pricing-price">Custom</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Campus-wide LMS integration (Canvas, Moodle)</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Custom database deployment (MySQL / MariaDB)</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Custom institutional rubric models</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> Dedicated compliance audit logs</li>
+          <li class="pricing-feature-item"><i data-lucide="check" style="color: var(--success); width: 16px;"></i> SLA & dedicated support engineer</li>
+        </ul>
+        <button class="btn btn-secondary" style="width: 100%;" onclick="openDemoDrawer()">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section" id="faq">
+    <div class="section-header">
+      <span class="badge badge-primary" style="margin-bottom: 12px;">Frequently Asked Questions</span>
+      <h2>Common Questions About GradeAI</h2>
+    </div>
+
+    <div class="accordion-item active">
+      <div class="accordion-header" onclick="this.parentElement.classList.toggle('active')">
+        <span>How does the AI grade short answers and descriptive responses?</span>
+        <i data-lucide="chevron-down"></i>
+      </div>
+      <div class="accordion-body">
+        GradeAI uses advanced natural language processing to evaluate responses semantically against teacher-defined reference answers and rubrics. It assesses conceptual comprehension, terminology coverage, and logical structure rather than requiring verbatim word-for-word repetition. Partial credit is awarded according to weighted rubric criteria.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="this.parentElement.classList.toggle('active')">
+        <span>Does the system automatically publish grades without teacher review?</span>
+        <i data-lucide="chevron-down"></i>
+      </div>
+      <div class="accordion-body">
+        Never without explicit educator authorization. AI-generated scores remain recommendations in a review queue. Instructors can modify any mark, amend the constructive comments, and must click "Approve & Publish Grade" before students receive their finalized results.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="this.parentElement.classList.toggle('active')">
+        <span>How is plagiarism detected between students?</span>
+        <i data-lucide="chevron-down"></i>
+      </div>
+      <div class="accordion-body">
+        Submissions undergo text normalization and 3-word n-gram shingle indexing. Pairwise comparisons compute Jaccard similarities and extract continuous overlapping clauses. When textual overlap crosses the configured threshold, a report is generated with side-by-side highlighted passages for instructor review.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="this.parentElement.classList.toggle('active')">
+        <span>What happens if the external AI API key is not configured?</span>
+        <i data-lucide="chevron-down"></i>
+      </div>
+      <div class="accordion-body">
+        GradeAI includes a deterministic, zero-dependency built-in Semantic Evaluation Engine that executes locally. It tokenizes, checks required conceptual keywords, computes shingle overlap against reference answers, and generates scores and feedback with 100% reliability out-of-the-box.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="landing-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <a href="/index.html" class="brand-logo" style="margin-bottom: 16px;">
+          <div class="brand-icon"><i data-lucide="sparkles"></i></div>
+          <span>Grade<strong style="color: var(--primary);">AI</strong></span>
+        </a>
+        <p style="font-size: 0.9rem; line-height: 1.6; max-width: 320px;">
+          Intelligent Assignment Auto-Grader empowering colleges, universities, and educators with automated evaluation, academic integrity, and constructive student feedback.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#simulator">AI Simulator</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Demo Portals</h5>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)" onclick="demoDirectLogin('teacher')">Teacher Portal</a></li>
+          <li><a href="javascript:void(0)" onclick="demoDirectLogin('student1')">Student Portal</a></li>
+          <li><a href="javascript:void(0)" onclick="demoDirectLogin('admin')">Administrator Panel</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Security & Standards</h5>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)">FERPA & GDPR Compliance</a></li>
+          <li><a href="javascript:void(0)">Academic Integrity Ethics</a></li>
+          <li><a href="javascript:void(0)">Audit Trail Verification</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 GradeAI Education Platform. All rights reserved.</div>
+      <div>Engineered for College & University Demonstrations</div>
+    </div>
+  </footer>
+
+  <!-- DEMO 1-CLICK DRAWER / MODAL -->
+  <div id="demo-drawer-overlay" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3>Select Instant Demo Role</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Explore the live platform with preloaded courses and assignments</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeDemoDrawer()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="card" style="cursor: pointer; transition: var(--transition);" onclick="demoDirectLogin('teacher')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="avatar-circle">RC</div>
+              <div>
+                <strong>Dr. Robert Chen (Teacher)</strong>
+                <p style="font-size: 0.82rem; margin: 0;">Computer Science & AI • Create exams, approve AI grades, review plagiarism</p>
+              </div>
+            </div>
+            <span class="badge badge-primary">Enter Dashboard →</span>
+          </div>
+        </div>
+
+        <div class="card" style="cursor: pointer; transition: var(--transition);" onclick="demoDirectLogin('student1')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="avatar-circle" style="background: linear-gradient(135deg, #10b981, #06b6d4);">AR</div>
+              <div>
+                <strong>Alex Rivera (Student)</strong>
+                <p style="font-size: 0.82rem; margin: 0;">Computer Science • Take exams, submit solutions, view question feedback</p>
+              </div>
+            </div>
+            <span class="badge badge-success">Enter Portal →</span>
+          </div>
+        </div>
+
+        <div class="card" style="cursor: pointer; transition: var(--transition);" onclick="demoDirectLogin('admin')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="avatar-circle" style="background: linear-gradient(135deg, #ef4444, #f59e0b);">AD</div>
+              <div>
+                <strong>Katherine Hayes (Administrator)</strong>
+                <p style="font-size: 0.82rem; margin: 0;">System Admin • Manage users, monitor telemetry, audit trail</p>
+              </div>
+            </div>
+            <span class="badge badge-danger">Enter Console →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN IN MODAL -->
+  <div id="login-modal-overlay" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Sign In to GradeAI</h3>
+        <button class="modal-close-btn" onclick="closeLoginModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleManualLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="login-email" class="form-input" required placeholder="teacher@gradeai.edu">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="login-password" class="form-input" required placeholder="••••••••">
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 20px;">
+            <a href="javascript:void(0)" onclick="handleForgotPassword()" style="color: var(--primary);">Forgot Password?</a>
+            <a href="javascript:void(0)" onclick="switchToRegister()" style="color: var(--text-muted);">Create Account</a>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    function openDemoDrawer() {
+      document.getElementById('demo-drawer-overlay').classList.add('active');
+    }
+    function closeDemoDrawer() {
+      document.getElementById('demo-drawer-overlay').classList.remove('active');
+    }
+    function openLoginModal() {
+      document.getElementById('login-modal-overlay').classList.add('active');
+    }
+    function closeLoginModal() {
+      document.getElementById('login-modal-overlay').classList.remove('active');
+    }
+
+    async function demoDirectLogin(role) {
+      try {
+        showToast(`Signing in as ${role}...`, 'info');
+        await Auth.demoLogin(role);
+        window.location.href = '/app.html';
+      } catch (e) {
+        showToast('Login failed: ' + e.message, 'danger');
+      }
+    }
+
+    async function handleManualLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+      try {
+        showToast('Authenticating...', 'info');
+        await Auth.login(email, pass);
+        window.location.href = '/app.html';
+      } catch (err) {
+        showToast(err.message, 'danger');
+      }
+    }
+
+    async function handleForgotPassword() {
+      const email = prompt('Enter your registered email address for password reset:');
+      if (email) {
+        try {
+          const res = await API.forgotPassword(email);
+          alert(`${res.message}\nDemo Reset Token: ${res.demoResetCode || 'N/A'}`);
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+    }
+
+    function switchToRegister() {
+      closeLoginModal();
+      openModal(`
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3>Create Student or Teacher Account</h3>
+            <button class="modal-close-btn" onclick="closeModal()"><i data-lucide="x"></i></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="handleManualRegister(event)">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="reg-name" class="form-input" required placeholder="Elena Rostova">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="reg-email" class="form-input" required placeholder="elena@university.edu">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Role</label>
+                <select id="reg-role" class="form-select">
+                  <option value="student">Student</option>
+                  <option value="teacher">Faculty Teacher / Instructor</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password (Min 6 characters)</label>
+                <input type="password" id="reg-password" class="form-input" required minlength="6" placeholder="••••••••">
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Register Account</button>
+            </form>
+          </div>
+        </div>
+      `);
+    }
+
+    async function handleManualRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const role = document.getElementById('reg-role').value;
+      const password = document.getElementById('reg-password').value;
+
+      try {
+        showToast('Registering user account...', 'info');
+        await Auth.register({ name, email, role, password });
+        showToast('Account created successfully!', 'success');
+        closeModal();
+        setTimeout(() => { window.location.href = '/app.html'; }, 500);
+      } catch (err) {
+        showToast(err.message, 'danger');
+      }
+    }
+
+    // Initialize Simulator on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      LandingSimulator.runSimulation();
+    });
+  </script>
+</body>
+</html>

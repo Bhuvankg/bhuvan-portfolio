@@ -1,157 +1,271 @@
-# NOSH RESTO CAFE — Official Brand Website & Web Application
+# GradeAI — Intelligent Assignment Auto-Grader
 
-A complete, visually stunning, fully responsive restaurant and café web application created for **NOSH RESTO CAFE**, located in **Panchavalli, Karnataka, India**.
+[![Node.js](https://img.shields.io/badge/Node.js-v24+-green.svg)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-4.22-blue.svg)](https://expressjs.com)
+[![Database](https://img.shields.io/badge/Database-MySQL%20%7C%20SQLite-indigo.svg)](https://mysql.com)
+[![AI Engine](https://img.shields.io/badge/AI%20Engine-Google%20Gemini%20%2B%20NLP-purple.svg)](https://ai.google.dev)
+[![License](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
 
-Designed with a modern café aesthetic, deep espresso and dark charcoal backdrop, warm cream typography, and terracotta, caramel, and muted gold accents.
-
----
-
-## 📍 1. Verified Business Information
-
-| Detail | Information |
-| :--- | :--- |
-| **Restaurant Name** | **Nosh Resto Cafe** |
-| **Category** | Restaurant and café |
-| **Address** | Panchavalli, Gonikoppa, Thalassery–Mysore Road, Panchavalli, Karnataka 571105, India |
-| **Phone Number** | **+91 98953 86886** |
-| **Google Maps Plus Code** | **74PP+CM, Panchavalli, Karnataka** |
-| **Google Rating** | **4.7 / 5.0** (based on 34 verified reviews) |
-| **Price Range** | **₹200 – ₹400** per person |
-| **Available Services** | Dine-in, Kerbside pickup, No-contact delivery |
-| **Listed Closing Time** | **2:00 AM** *(Verify complete operating hours before publishing)* |
-
-### Verified Customer Feedback Themes:
-- Delicious and freshly prepared food.
-- Good food variety across categories.
-- Fast and attentive service.
-- Positive overall dining experiences.
-- *Late-Night Advisory:* Customer feedback indicates that food selections late at night may vary depending on daily prep.
+**GradeAI** is a production-grade, full-stack intelligent assignment auto-grading platform designed for universities, colleges, and educators. It combines automated multiple-choice question (MCQ) scoring, AI-assisted short-answer semantic evaluation, pairwise plagiarism shingle detection, and actionable personalized student feedback into a SaaS web application.
 
 ---
 
-## 🎨 2. Premium Brand Identity & Design System
+## 🌟 Key Features
 
-- **Background Palette:** Deep Espresso & Charcoal (`#0e0d0c`, `#161412`, `#1e1b18`, `#221e1a`).
-- **Typography:**
-  - Headings: Serif elegance (`Playfair Display`, Georgia).
-  - Body & UI: Clean, legible sans-serif (`Plus Jakarta Sans`).
-  - Text Colors: Warm Cream (`#f5efe6`), Ivory (`#fffdfa`), and subtle sand tones (`#d8cdbe`).
-- **Accent Colors:**
-  - Terracotta: `#d96b43` / `#e8825c` / `#b85028`
-  - Caramel: `#c68b59` / `#dc9f6e`
-  - Muted Gold: `#c5a059` / `#dfbd73`
-- **Logo:** Bespoke SVG crest emblem featuring modern café aroma & cloche motif with letterspaced serif wordmark (`assets/images/logo.svg`).
-- **Icons & Badges:** Standard Indian green dot veg / red non-veg indicators, live pulsing status pill for business hours, star ratings, and verified badges.
+### 1. 🤖 AI Auto-Grading Engine
+- **MCQ Evaluation:** Compares submitted selections against answer keys with immediate mark allocation and question-level explanation rationale.
+- **Semantic Short-Answer Evaluation:** Analyzes student answers conceptually against teacher reference answers and multi-criteria rubrics.
+- **Concept Extraction:** Highlights concepts mastered (green) and target concepts missing or underdeveloped (amber/red).
+- **Teacher-in-the-Loop Review:** AI marks remain suggestions until the instructor verifies or modifies scores and clicks **"Approve & Publish Grade"**.
+- **Confidence Rating:** Indicates evaluation certainty (`High`, `Medium`, `Low`) to flag borderline responses for closer human scrutiny.
+- **Dual Engine Architecture:** Connects to **Google Gemini API** when `GEMINI_API_KEY` is provided, with an intelligent built-in NLP semantic fallback engine that runs with 100% zero-config reliability offline.
 
----
+### 2. 🛡️ Plagiarism & Academic Integrity Center
+- **Pairwise Cohort Comparison:** Normalizes text and generates 3-word n-gram shingles with Jaccard similarity metrics across all student submissions and reference keys.
+- **Side-by-Side Visual Diff:** Side-by-side modal displaying matching passages with highlighted excerpts.
+- **Teacher Resolution Workflow:** Instructors review context and mark alerts as **"Cleared (Legitimate Citation / Standard Terminology)"** or **"Flag for Academic Review"**.
+- **Ethical Integrity Notice:** Clarifies that textual similarity is not automatic guilt and requires teacher evaluation.
 
-## 🍲 3. Interactive Food Menu
+### 3. 📊 Role-Based Portals & Dashboards
+- **Faculty Teacher Portal:**
+  - Metrics: Total Students, Total Assignments, Pending Evaluations, Class Average, Plagiarism Alerts.
+  - Assignment Manager: Wizard with dynamic question builder (MCQ + Short Answer with rubrics, options, keywords).
+  - AI Grading Studio: Side-by-side answer inspection, score sliders, and personalized feedback publisher.
+  - Analytics & Gradebook: Interactive Chart.js grade distributions, question difficulty ranking, and 1-click **CSV Gradebook Export**.
+- **Student Learning Portal:**
+  - Active assignments browser with deadlines and instructions.
+  - Interactive test-taking portal with live word counter and optional file attachment.
+  - Detailed Question-by-Question report cards with marks, mastered concepts, and constructive teacher feedback.
+  - Printable/PDF grade summary cards.
+- **Administrator Console:**
+  - System telemetry: total users, courses, submissions, AI calls, database engine status.
+  - User management: account search, role modification, activation/deactivation.
+  - Course administration: curriculum codes, semester terms, instructor assignments.
+  - Security audit logs: timestamped records of logins, grade approvals, and integrity scans.
 
-Organized into 8 distinct categories as requested:
-1. **Popular Favourites** (Nosh Special Chicken Dum Biriyani, Dragon Chicken, Paneer Butter Masala, Malabar Parotta Combo, Cold Coffee Blend)
-2. **Starters** (Pepper Chicken Dry, Chicken Lollipop, Chilli Gobi, Mushroom Pepper Fry, Chicken 65)
-3. **Chicken Specials** (Nosh Highway Chicken Roast, Butter Chicken, Kadai Chicken, Chettinad Masala)
-4. **Biriyani and Rice** (Thalassery Chicken Biriyani, Malabar Ghee Rice, Egg Dum Biriyani, Royal Veg Biriyani, Jeera Rice)
-5. **Indian Main Course** (Dal Makhani, Kadai Paneer, Egg Masala, Malabar Parotta, Garlic Naan)
-6. **Vegetarian Dishes** (Tandoori Paneer Tikka, Mushroom Masala, Veg Fried Rice with Manchurian, Aloo Gobi)
-7. **Snacks** (Grilled Chicken Club Sandwich, Paneer Tikka Sandwich, Peri-Peri Fries, Chicken Cheese Burger)
-8. **Beverages and Desserts** (Nosh Special Cold Coffee with Ice Cream, Fresh Mint Lime Mojito, Traditional Filter Coffee, Gulab Jamun, Hot Chocolate Brownie)
-
-### Interactive Features:
-- Real-time live search by dish name, description, and keywords.
-- Dietary toggles: All, Vegetarian (`🟢`), Non-Vegetarian (`🔴`).
-- Sort by: Recommended, Price Low to High, Price High to Low, Top Rated.
-- Dish Quick View Modal: Inspect preparation time, portion sizes, spice levels, and descriptions.
-- Quantity Stepper: Increment and decrement dishes directly from the card.
-- *Sample Menu Notice:* Prominently displays clear notice that sample dishes and placeholder prices are used until the official menu card is supplied.
-
----
-
-## 🛒 4. Online Ordering & Checkout Experience
-
-- **Persistent Shopping Cart Drawer:** Accessible via header, floating button, or mobile bottom bar.
-- **Order Type Selector:**
-  - **Dine-in:** Service fee ₹0.
-  - **Kerbside Pickup:** Minimal eco-packaging fee (₹15).
-  - **No-Contact Delivery:** Flat delivery fee (₹40) with dynamic required address field.
-- **Client Validation:** Full name (min. 2 characters), 10-digit Indian mobile number validation (`/^[6-9]\d{9}$/`), and landmark address for delivery.
-- **Demo Checkout Flow:**
-  - Transparent demo mode disclaimer informing customers that orders are simulated.
-  - Generates unique Order ID (`#NOSH-XXXXXX`).
-  - Displays preparation timer estimate and itemized receipt breakdown.
-- **WhatsApp Order Builder:**
-  - Formats order items, quantities, subtotal, customer details, and special instructions into a clean message.
-  - Interactive "Review WhatsApp Message" preview modal before launching WhatsApp to verified phone number **+91 98953 86886**.
+### 4. 🎨 SaaS UI/UX Design System
+- Dark navy (`#090d16` / `#0f172a`) theme with violet (`#8b5cf6`) and indigo (`#6366f1`) accents.
+- Seamless Light Mode toggle (`#f8fafc` / `#ffffff`) with instant persistence.
+- Selective glassmorphism, responsive navigation drawer, Lucide iconography, and Chart.js visualizations.
+- Interactive **AI Grader Simulator** right on the landing page for live demonstrations.
 
 ---
 
-## 📸 5. Food & Ambience Photo Gallery
+## 🛠️ Technology Stack
 
-- Filterable tabs: All Photos, Food & Biriyani, Café Ambience, Beverages & Coffee, Starters & Snacks.
-- High-resolution, warm food photography.
-- Interactive Lightbox modal with keyboard `Esc` closing and caption viewer.
-
----
-
-## 📱 6. Responsive Mobile Experience
-
-- Dedicated sticky mobile navigation bar at the bottom with quick access to **Home**, **Menu**, **Call (+91 98953 86886)**, **WhatsApp**, and **Cart**.
-- Touch-friendly hamburger drawer navigation.
-- Smooth horizontal category filter pills.
-- One-click copy for Google Maps Plus Code (`74PP+CM, Panchavalli, Karnataka`).
+| Layer | Technology | Details |
+|---|---|---|
+| **Frontend** | HTML5, CSS3, JavaScript (ES6+), Chart.js, Lucide Icons | Responsive SaaS UI, Dark/Light modes, No heavyweight framework required |
+| **Backend** | Node.js, Express.js | Modular REST API with centralized error handling |
+| **Database** | MySQL / SQLite Dual Adapter | `mysql2/promise` with schema DDL + embedded `better-sqlite3` auto-fallback |
+| **Authentication** | JSON Web Tokens (JWT), bcryptjs | Secure password hashing, RBAC middleware, 7-day sessions |
+| **AI Evaluation** | Google Gemini API + NLP Semantic Engine | Tokenization, n-gram shingle indexing, Jaccard similarity, rubric criteria scoring |
+| **File Storage** | Multer | File uploads (`.pdf`, `.txt`, `.docx`, code files) with 10MB limits |
 
 ---
 
-## 🚀 7. Running the Application Locally
+## 📂 Project Directory Structure
 
-### Prerequisites
-- Node.js (v18+)
+```text
+gradeai/
+├── public/                     # Static frontend client
+│   ├── index.html              # Premium SaaS landing page & simulator
+│   ├── app.html                # Main SPA dashboard workspace
+│   ├── login.html              # Standalone login view
+│   ├── register.html           # Standalone registration view
+│   ├── css/
+│   │   └── style.css           # Complete SaaS design system (Light/Dark themes)
+│   └── js/
+│       ├── api.js              # REST API fetch wrapper
+│       ├── auth.js             # Session state & 1-click role switcher
+│       ├── teacherDashboard.js # Teacher grading studio & analytics
+│       ├── studentDashboard.js # Student test-taking & feedback view
+│       ├── adminDashboard.js   # Administrator console & audit trail
+│       └── app.js              # Router, modals, toasts & simulator
+├── src/                        # Server application
+│   ├── config/
+│   │   └── db.js               # Dual MySQL & SQLite connection manager
+│   ├── controllers/            # Business logic handlers
+│   │   ├── authController.js
+│   │   ├── assignmentController.js
+│   │   ├── submissionController.js
+│   │   ├── gradingController.js
+│   │   ├── plagiarismController.js
+│   │   ├── analyticsController.js
+│   │   └── adminController.js
+│   ├── routes/                 # Express API routes
+│   ├── services/
+│   │   ├── aiGradingService.js # MCQ & Gemini / NLP semantic evaluation
+│   │   └── plagiarismService.js# Shingle comparison & excerpt diffs
+│   └── middleware/             # Auth, RBAC, Multer, Error handler
+├── database/                   # Database schemas & sample datasets
+│   ├── schema.sql              # MySQL relational schema (15 tables)
+│   ├── seed.sql                # MySQL seed dataset
+│   ├── seedData.js             # Universal sample dataset generator
+│   ├── seedRunner.js           # CLI database initialization runner
+│   └── testSuite.js            # Automated end-to-end verification suite
+├── uploads/                    # Secure student document uploads
+├── .env.example                # Environment variable configuration template
+├── .env                        # Local configuration
+├── package.json                # Dependencies and npm scripts
+├── server.js                   # Application entrypoint
+└── README.md                   # Complete documentation
+```
 
-### Installation & Launch
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Prerequisites
+- **Node.js** v18 or higher (v24+ recommended).
+- **npm** v9 or higher.
+- *(Optional)* **MySQL Server** 8.0+ if you wish to run MySQL instead of SQLite.
+
+### 2. Installation
+Clone or navigate to the repository directory and install dependencies:
 ```bash
-# Navigate to directory
 cd c:\antigravity
-
-# Install dependencies (Express is already included)
 npm install
+```
 
-# Start the server
+### 3. Configure Environment Variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+Default `.env` configuration:
+```env
+PORT=3000
+NODE_ENV=development
+JWT_SECRET=gradeai_super_secret_jwt_key_2026_education_platform
+JWT_EXPIRES_IN=7d
+
+# Database Mode (Set DB_TYPE=mysql for MySQL, or DB_TYPE=sqlite for zero-config embedded SQLite)
+DB_TYPE=sqlite
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=gradeai_db
+
+# Optional Google Gemini API Key (Built-in NLP engine is active if left empty)
+GEMINI_API_KEY=
+AI_MODEL=gemini-1.5-flash
+
+PLAGIARISM_SIMILARITY_THRESHOLD=25
+```
+
+### 4. Initialize Database & Sample Data
+Run the database seeder to initialize the tables and populate sample courses, assignments, questions, rubrics, and students:
+```bash
+npm run seed
+```
+
+### 5. Launch Application
+Start the server:
+```bash
 npm start
 ```
+The server will boot and display:
+```text
+================================================================
+🚀 GradeAI Auto-Grader Server running on http://localhost:3000
+📊 Database Engine: SQLITE (or MYSQL)
+🤖 AI Engine: Built-in NLP Semantic Engine (or Google Gemini)
+✨ Open http://localhost:3000 in your browser to start grading!
+================================================================
+```
 
-Open your browser at:
-```
-http://localhost:3000
-```
+Open your browser to: **[http://localhost:3000](http://localhost:3000)**.
 
 ---
 
-## 📂 8. Project Structure
+## 🧪 Demo Credentials & 1-Click Role Switcher
 
-```
-├── assets/
-│   └── images/
-│       ├── logo.svg              # Custom Nosh Resto Cafe vector brandmark
-│       └── favicon.svg           # High-resolution favicon
-├── css/
-│   ├── style.css                 # Core design system, espresso palette & animations
-│   └── responsive.css            # Tablet and mobile viewport optimizations
-├── js/
-│   ├── menu-data.js              # Sample menu dataset (8 categories, 30+ dishes)
-│   ├── cart.js                   # Cart engine, validation, WhatsApp builder & demo checkout
-│   ├── menu.js                   # Menu filtering, live search, sort & quick view modal
-│   ├── gallery.js                # Gallery filter tabs & lightbox viewer
-│   └── main.js                   # Sticky header, hours status pill & clipboard helper
-├── index.html                    # Main flagship landing experience
-├── menu.html                     # Dedicated interactive menu page
-├── about.html                    # Dedicated brand story & location page
-├── gallery.html                  # Dedicated photo gallery page
-├── reviews.html                  # Dedicated Google reviews & rating page
-├── contact.html                  # Dedicated contact, plus code & inquiry page
-├── server.js                     # Express API and static server (native HTTP fallback)
-└── package.json                  # Project metadata and start scripts
-```
+For instant testing and presentation demonstrations, GradeAI features **1-Click Demo Login** buttons on the landing page, login modal, and in the dashboard header:
+
+| Role | Demo Email | Demo Password | Purpose |
+|---|---|---|---|
+| **Faculty Teacher** | `teacher@gradeai.edu` | `Teacher@123` | Create assignments, review AI scores, approve grades, inspect plagiarism |
+| **Student (Alex Rivera)** | `student1@gradeai.edu` | `Student@123` | View published Grade A (94%) feedback with mastered concepts breakdown |
+| **Student (Brenda Vance)** | `student2@gradeai.edu` | `Student@123` | View Grade B (82%) feedback with missed concepts guidance |
+| **Administrator** | `admin@gradeai.edu` | `Admin@123` | User access control, course administration, security audit logs |
 
 ---
 
-© 2026 Nosh Resto Cafe. Panchavalli, Gonikoppa, Thalassery–Mysore Road, Karnataka 571105.
+## 🔬 Testing Major Workflows
+
+You can run the automated test suite at any time:
+```bash
+node database/testSuite.js
+```
+All 14 tests verify:
+- System health and database connectivity
+- Role-based JWT authentication
+- Assignment retrieval and question schema verification
+- Teacher analytics telemetry
+- Plagiarism pairwise scan execution and side-by-side diff inspection
+- Teacher grade approval and status transitions
+- Admin statistics and user management
+- Student feedback cards and Gradebook CSV export
+
+---
+
+## 🗄️ MySQL Database Setup (Optional)
+
+If you have MySQL installed and prefer running on MySQL:
+1. Ensure MySQL daemon is running on `localhost:3306`.
+2. Update `.env`:
+   ```env
+   DB_TYPE=mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=your_mysql_password
+   DB_NAME=gradeai_db
+   ```
+3. Run schema initialization:
+   ```bash
+   mysql -u root -p < database/schema.sql
+   npm run seed
+   ```
+4. Start the server:
+   ```bash
+   npm start
+   ```
+
+---
+
+## 🤖 Configuring Google Gemini AI API
+
+To enable live Google Gemini API evaluation for short answers:
+1. Obtain an API key from [Google AI Studio](https://aistudio.google.com).
+2. Add your key to `.env`:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   AI_MODEL=gemini-1.5-flash
+   ```
+3. Restart the server:
+   ```bash
+   npm start
+   ```
+*Note: If no API key is provided, GradeAI automatically operates in zero-config mode using its built-in NLP semantic evaluation engine.*
+
+---
+
+## 🚢 Production Deployment Instructions
+
+1. **Environment Setup:** Set `NODE_ENV=production` and generate a cryptographically strong `JWT_SECRET` (e.g. `openssl rand -hex 32`).
+2. **Reverse Proxy:** Configure Nginx or Apache as a reverse proxy in front of Node.js on port 3000 with SSL/TLS (Certbot / Let's Encrypt).
+3. **Process Management:** Use PM2 to run and monitor the application:
+   ```bash
+   npm install -g pm2
+   pm2 start server.js --name "gradeai" -i max
+   pm2 save
+   ```
+4. **Database Backups:** Schedule regular MySQL dumps or SQLite snapshots with cron.
+
+---
+
+## 📄 License
+This project is licensed under the MIT License. Developed for university and college evaluation demonstrations.

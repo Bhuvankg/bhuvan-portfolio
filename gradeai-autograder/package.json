@@ -1,0 +1,35 @@
+{
+  "name": "gradeai-intelligent-autograder",
+  "version": "1.0.0",
+  "description": "GradeAI — Intelligent Assignment Auto-Grader with AI Short-Answer Evaluation, MCQ Scoring, Plagiarism Detection, and Role-Based Dashboards",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node database/seedRunner.js"
+  },
+  "keywords": [
+    "education",
+    "ai-grading",
+    "autograder",
+    "plagiarism-detection",
+    "mcq-grading",
+    "saas",
+    "edtech",
+    "express",
+    "mysql",
+    "sqlite"
+  ],
+  "author": "GradeAI Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^11.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.12.0"
+  }
+}

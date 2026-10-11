@@ -1,4 +1,7 @@
 node_modules/
+dist/
+temp_screenshots/
+preview_screenshots/
 .env
 uploads/*
 !uploads/.gitkeep
@@ -6,5 +9,7 @@ database/*.db
 database/*.db-journal
 database/*.db-shm
 database/*.db-wal
+gradeai-autograder/database/*.db*
 *.log
 .DS_Store
+

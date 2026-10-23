@@ -1,0 +1,90 @@
+/* style.css */
+/* Color palette */
+:root {
+  --forest-green: #0b3d2e; /* dark forest green */
+  --black: #000000;
+  --cream: #f8f5f0;
+  --gold: #b8860b;
+  --text-dark: #212529;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--black);
+  color: var(--cream);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, .navbar-brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--cream);
+}
+
+.navbar {
+  background-color: rgba(11, 61, 46, 0.9); /* forest green with transparency */
+}
+
+.nav-link {
+  color: var(--cream) !important;
+  transition: color 0.3s;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--gold) !important;
+}
+
+.btn-gold {
+  background-color: var(--gold);
+  border: none;
+  color: var(--black);
+}
+.btn-gold:hover {
+  background-color: #d4a017;
+  color: var(--black);
+}
+
+.hero {
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+.hero > .container {
+  position: relative;
+  z-index: 1;
+}
+.text-gold { color: var(--gold) !important; }
+.bg-cream { background-color: var(--cream) !important; color: var(--text-dark) !important; }
+
+.card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+footer {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .hero { height: 60vh; }
+  .navbar-brand { font-size: 1.2rem; }
+}

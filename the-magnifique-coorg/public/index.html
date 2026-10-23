@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css" />
-</head>
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark py-3">
@@ -102,22 +103,22 @@
       <h2 class="text-center mb-4 fw-bold text-dark">Reserve a Table</h2>
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <form id="reservationForm">
+        <form id="reservationForm">
             <div class="row g-3">
               <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Name" required />
+                <input type="text" class="form-control" placeholder="Name" name="name" required />
               </div>
               <div class="col-md-6">
-                <input type="tel" class="form-control" placeholder="Phone" required />
+                <input type="tel" class="form-control" placeholder="Phone" name="phone" required />
               </div>
               <div class="col-md-6">
-                <input type="email" class="form-control" placeholder="Email" required />
+                <input type="email" class="form-control" placeholder="Email" name="email" required />
               </div>
               <div class="col-md-6">
-                <input type="datetime-local" class="form-control" required />
+                <input type="datetime-local" class="form-control" name="datetime" required />
               </div>
               <div class="col-12">
-                <textarea class="form-control" rows="3" placeholder="Special requests (optional)"></textarea>
+                <textarea class="form-control" rows="3" placeholder="Special requests (optional)" name="notes"></textarea>
               </div>
               <div class="col-12 text-center">
                 <button type="submit" class="btn btn-gold btn-lg mt-3">Book Now</button>

@@ -18,14 +18,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Reservation form handling
+  // Reservation form handling using Supabase
   const form = document.getElementById('reservationForm');
   if (form) {
-    form.addEventListener('submit', e => {
+    // Initialize Supabase client (replace with your own URL and anon key)
+    const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_PUBLIC_KEY';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-      // In a real site, we'd POST to a backend. Here we just confirm.
-      alert('Thank you! Your reservation request has been received. We will contact you shortly.');
-      form.reset();
+      const formData = new FormData(form);
+      const reservation = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        datetime: formData.get('datetime'),
+        notes: formData.get('notes')
+      };
+
+      const { data, error } = await supabaseClient.from('reservations').insert([reservation]);
+      if (error) {
+        alert('Sorry, we could not save your reservation. Please try again later.');
+        console.error(error);
+      } else {
+        alert('Thank you! Your reservation has been saved.');
+        form.reset();
+      }
     });
   }
+
+  const form = document.getElementById('reservationForm');
+  if (form) {
+    // Initialize Supabase client (replace with your own URL and anon key)
+    const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_PUBLIC_KEY';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const reservation = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        datetime: formData.get('datetime'),
+        notes: formData.get('notes')
+      };
+
+      const { data, error } = await supabase.from('reservations').insert([reservation]);
+      if (error) {
+        alert('Sorry, we could not save your reservation. Please try again later.');
+        console.error(error);
+      } else {
+        alert('Thank you! Your reservation has been saved.');
+        form.reset();
+      }
+    });
+  }
+
 });

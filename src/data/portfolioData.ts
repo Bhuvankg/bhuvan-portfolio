@@ -135,6 +135,24 @@ export const PROJECTS: ProjectItem[] = [
     image: "/projects/gradeai.png",
     ctaText: "Launch GradeAI",
     featured: true
+  },
+  {
+    id: "new-bites-restaurant",
+    title: "New Bites Restaurant Website",
+    subtitle: "Restaurant Website · Web Development",
+    description: "A modern restaurant website featuring a digital food menu, item prices, restaurant information, and a convenient interface for customers to explore the menu and place orders.",
+    capabilities: [
+      "Digital food menu",
+      "Food items and prices",
+      "Responsive website design",
+      "Customer-friendly menu browsing",
+      "Restaurant contact and ordering options"
+    ],
+    tags: ["Restaurant Website", "Web Development", "Digital Menu", "Responsive Design"],
+    liveUrl: "http://new-bites-kushalnagar.lovable.app/menu",
+    image: "/projects/new-bites.png",
+    ctaText: "Live Demo",
+    featured: true
   }
 ];
 

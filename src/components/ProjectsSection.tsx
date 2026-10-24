@@ -51,6 +51,7 @@ export const ProjectsSection: React.FC = () => {
           {PROJECTS.map((project, idx) => (
             <div
               key={project.id}
+              id={project.id}
               className="group relative rounded-3xl bg-[#0c0f1a]/95 border border-white/[0.08] overflow-hidden backdrop-blur-2xl transition-all duration-500 hover:border-[#5B8CFF]/50 hover:shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_30px_rgba(91,140,255,0.15)] hover:-translate-y-2 flex flex-col justify-between"
             >
               {/* Top Gradient Accent Bar on hover */}
@@ -171,9 +172,9 @@ export const ProjectsSection: React.FC = () => {
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-[#9298AB] hover:text-white border border-white/[0.08] hover:border-white/20 font-mono text-xs transition-colors"
                   >
                     <Github className="w-3.5 h-3.5" />
-                    <span>View Repository</span>
+                    <span>View Source Code</span>
                   </a>
-                ) : (
+                ) : project.id === 'new-bites-restaurant' ? null : (
                   <a
                     href={PERSONAL_INFO.github}
                     target="_blank"
